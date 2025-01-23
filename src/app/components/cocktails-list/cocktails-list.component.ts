@@ -34,7 +34,7 @@ export class CocktailsListComponent {
         ? cocktail.ingredient.toLowerCase().includes(filters.ingredient.toLowerCase())
         : true;
 
-      const matchesId = filters.id.toString() ? cocktail.id.toString() === filters.id.toString() : true;
+      const matchesId = filters.id?.toString() ? cocktail.id?.toString() === filters.id?.toString() : true;
 
       return matchesName && matchesIngredient && matchesId;
     });
