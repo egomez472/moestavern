@@ -1,0 +1,49 @@
+<div class="cocktail-filter" [formGroup]="filterForm">
+  <div>
+    <input
+      id="name"
+      formControlName="name"
+      type="text"
+      placeholder="Buscar por nombre"
+    />
+    <div *ngIf="filterForm.get('name')?.invalid && filterForm.get('name')?.touched">
+      <small *ngIf="filterForm.get('name')?.errors?.['pattern']">
+        Solo se permiten caracteres alfabéticos.
+      </small>
+      <small *ngIf="filterForm.get('name')?.errors?.['maxlength']">
+        Máximo 50 caracteres.
+      </small>
+    </div>
+  </div>
+
+  <div>
+    <input
+      id="ingredient"
+      formControlName="ingredient"
+      type="text"
+      placeholder="Buscar por ingrediente"
+    />
+    <div *ngIf="filterForm.get('ingredient')?.invalid && filterForm.get('ingredient')?.touched">
+      <small *ngIf="filterForm.get('ingredient')?.errors?.['pattern']">
+        Solo se permiten caracteres alfabéticos.
+      </small>
+      <small *ngIf="filterForm.get('ingredient')?.errors?.['maxlength']">
+        Máximo 50 caracteres.
+      </small>
+    </div>
+  </div>
+
+  <div>
+    <input
+      id="id"
+      formControlName="id"
+      type="text"
+      placeholder="Buscar por ID"
+    />
+    <div *ngIf="filterForm.get('id')?.invalid && filterForm.get('id')?.touched">
+      <small *ngIf="filterForm.get('id')?.errors?.['pattern']">
+        Solo se permiten caracteres numéricos.
+      </small>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,7 @@
-<p>cocktails-list works!</p>
+<app-cocktail-filter (filterChange)="onFilterChange($event)"></app-cocktail-filter>
+
+<!-- Mostrar los resultados filtrados -->
+<div *ngFor="let cocktail of filteredCocktails">
+  {{ cocktail.name }} - {{ cocktail.ingredient }} - {{ cocktail.id }}
+</div>
+

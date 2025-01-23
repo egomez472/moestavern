@@ -1,0 +1,18 @@
+.cocktail-filter {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+  background-color: #7d5183;
+  padding: 0.5rem;
+
+  label {
+    font-weight: bold;
+  }
+
+  input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+}
