@@ -5,7 +5,7 @@ import { Cocktail, Ingredient } from "../../interfaces/cocktail.interface";
    * @param response Respuesta del servicio
    * @returns Lista de cócteles procesada
    */
-export function processCocktailResponse(response: { drinks: any[] } | null): Cocktail[] {
+export function processCocktailResponse(response: { drinks: any } | null): Cocktail[] {
   if (!response?.drinks || !Array.isArray(response.drinks)) {
     console.warn('La respuesta no contiene datos válidos.');
     return [];
@@ -19,7 +19,7 @@ export function processCocktailResponse(response: { drinks: any[] } | null): Coc
  * @param item Elemento del array de cócteles
  * @returns Objeto `Cocktail` procesado
  */
-function mapCocktail(item: any): Cocktail {
+export function mapCocktail(item: any): Cocktail {
   return {
     id: parseInt(item.idDrink, 10),
     img: item.strDrinkThumb || '',

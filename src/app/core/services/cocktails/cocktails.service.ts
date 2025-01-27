@@ -3,7 +3,7 @@ import { EndpointsConstant } from '../../utils/constants';
 import { HttpParams } from '@angular/common/http';
 import { map, Observable, of } from 'rxjs';
 import { RestService } from '../rest/rest.service';
-import { extractIngredients, processCocktailResponse } from '../../utils/functions/cocktails';
+import { processCocktailResponse } from '../../utils/functions/cocktails';
 import { Cocktail } from '../../interfaces/cocktail.interface';
 
 @Injectable({

@@ -5,6 +5,7 @@ import { CocktailFilterInterface } from '../../core/interfaces/cocktail-filter.i
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { CocktailsService } from '../../core/services/cocktails/cocktails.service';
 import { HttpClientModule } from '@angular/common/http';
+import { Cocktail } from '../../core/interfaces/cocktail.interface';
 
 @Component({
   selector: 'app-cocktail-filter',
@@ -19,7 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrl: './cocktail-filter.component.scss'
 })
 export class CocktailFilterComponent implements OnInit, OnDestroy {
-  @Output() filterChange = new EventEmitter<CocktailFilterInterface>();
+  @Output() filterChange = new EventEmitter<Cocktail[]>();
   private destroy$ = new Subject<void>();
 
   filterForm: FormGroup;
@@ -52,13 +53,9 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
   getCocktailByName(value: string) {
     const name = value;
     this.cocktailSvc.getCocktailByName(name).pipe(takeUntil(this.destroy$)).subscribe(
-      response => {
+      (response: Cocktail[]) => {
         console.log(response);
-        this.filterChange.emit({
-          name: name,
-          ingredient: this.filterForm.get('ingredient')?.value || '',
-          id: this.filterForm.get('id')?.value || null,
-        });
+        this.filterChange.emit(response);
       }
     )
   }
