@@ -11,7 +11,7 @@ describe('CocktailFilterComponent', () => {
       imports: [CocktailFilterComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(CocktailFilterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CocktailFilterInterface } from '../../core/interfaces/cocktail-filter.interface';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
@@ -18,7 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
   templateUrl: './cocktail-filter.component.html',
   styleUrl: './cocktail-filter.component.scss'
 })
-export class CocktailFilterComponent implements OnDestroy {
+export class CocktailFilterComponent implements OnInit, OnDestroy {
   @Output() filterChange = new EventEmitter<CocktailFilterInterface>();
   private destroy$ = new Subject<void>();
 
@@ -33,7 +33,9 @@ export class CocktailFilterComponent implements OnDestroy {
       ingredient: ['', [Validators.pattern(/^[a-zA-Z\s]*$/), Validators.maxLength(50)]],
       id: [null, [Validators.pattern(/^\d*$/)]]
     });
+  }
 
+  ngOnInit(): void {
     this.filterForm.get("name")?.valueChanges.pipe(
       takeUntil(this.destroy$),
       debounceTime(500)
@@ -42,18 +44,23 @@ export class CocktailFilterComponent implements OnDestroy {
     )
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   getCocktailByName(value: string) {
     const name = value;
     this.cocktailSvc.getCocktailByName(name).pipe(takeUntil(this.destroy$)).subscribe(
       response => {
         console.log(response);
+        this.filterChange.emit({
+          name: name,
+          ingredient: this.filterForm.get('ingredient')?.value || '',
+          id: this.filterForm.get('id')?.value || null,
+        });
       }
     )
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
 }
