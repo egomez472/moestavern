@@ -1,0 +1,105 @@
+:root {
+  --background-color: #4E3B31; /* Marrón oscuro */
+  --accent-color: #F6D02F; /* Amarillo */
+  --text-color: #FFFFFF; /* Blanco */
+  --secondary-text-color: #D3D3D3; /* Gris claro */
+  --button-color: #3B6A3A; /* Verde botella */
+  --warning-button-color: #C72C41; /* Rojo */
+  --border-color: #A65E2E; /* Marrón claro */
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--accent-color);
+}
+
+p {
+  color: var(--secondary-text-color);
+}
+
+/* Estilos para botones */
+.ui-button {
+  background-color: var(--button-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+.ui-button.ui-button-danger {
+  background-color: var(--warning-button-color);
+}
+
+/* Estilos para inputText */
+.ui-inputtext {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+.ui-inputtext:focus {
+  border-color: var(--accent-color);
+}
+
+/* Estilos para inputGroup */
+.ui-inputgroup {
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px; /* Opcional: para bordes redondeados */
+}
+
+.ui-inputgroup .ui-inputtext {
+  border: none; /* Eliminar borde del input dentro del inputGroup */
+  background-color: transparent; /* Fondo transparente */
+  color: var(--text-color);
+}
+
+.ui-inputgroup .ui-inputtext:focus {
+  border: none; /* Mantener sin borde al enfocar */
+  outline: none; /* Eliminar el contorno */
+}
+
+/* Estilos para el contenedor del inputGroup */
+.ui-inputgroup-addon {
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px; /* Opcional: para bordes redondeados */
+}
+
+/* Estilos para tarjetas */
+.ui-card {
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+}
+
+/* Estilos para paneles */
+.ui-panel {
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+}
+
+.p-inputtext:enabled:focus {
+  box-shadow: none;
+  border-color: #c29ecc!important;
+}
+
+.p-inputtext:enabled:hover {
+  border-color: #c29ecc!important;
+}
+
+.p-inputgroup-addon {
+  background-color: #a37963;
+  color: yellow;
+  border-color: #a37963;
+}
+
+.p-inputtext {
+  background-color: #c29ecc;
+  border-color: #c29ecc !important;
+  color: #4e3b31;
+  font-weight: 600;
+}

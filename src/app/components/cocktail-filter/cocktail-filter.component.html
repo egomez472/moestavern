@@ -1,48 +1,49 @@
-<div class="cocktail-filter" [formGroup]="filterForm">
-  <div>
-    <input
-      id="name"
-      formControlName="name"
-      type="text"
-      placeholder="Buscar por nombre"
-    />
-    <div *ngIf="filterForm.get('name')?.invalid && filterForm.get('name')?.touched">
+<div class="filters" [formGroup]="filterForm">
+
+  <div class="filters__drinkName">
+    <p-inputGroup>
+      <p-inputGroupAddon>
+          <i class="pi pi-trophy"></i>
+      </p-inputGroupAddon>
+      <input pInputText formControlName="name" placeholder="Cocktail name"/>
+    </p-inputGroup>
+    <div class="filters__errors" *ngIf="filterForm.get('name')?.invalid && filterForm.get('name')?.touched">
       <small *ngIf="filterForm.get('name')?.errors?.['pattern']">
-        Solo se permiten caracteres alfabéticos.
+        Only alphabetic characters are allowed.
       </small>
       <small *ngIf="filterForm.get('name')?.errors?.['maxlength']">
-        Máximo 50 caracteres.
+        Maximum 50 characters.
       </small>
     </div>
   </div>
 
-  <div>
-    <input
-      id="ingredient"
-      formControlName="ingredient"
-      type="text"
-      placeholder="Buscar por ingrediente"
-    />
-    <div *ngIf="filterForm.get('ingredient')?.invalid && filterForm.get('ingredient')?.touched">
+  <div class="filters__drinkName">
+    <p-inputGroup>
+      <p-inputGroupAddon>
+          <i class="pi pi-chart-scatter"></i>
+      </p-inputGroupAddon>
+      <input pInputText formControlName="ingredient" placeholder="Cocktail ingredient"/>
+    </p-inputGroup>
+    <div class="filters__errors" *ngIf="filterForm.get('ingredient')?.invalid && filterForm.get('ingredient')?.touched">
       <small *ngIf="filterForm.get('ingredient')?.errors?.['pattern']">
-        Solo se permiten caracteres alfabéticos.
+        Only alphabetic characters are allowed.
       </small>
       <small *ngIf="filterForm.get('ingredient')?.errors?.['maxlength']">
-        Máximo 50 caracteres.
+        Maximum 50 characters.
       </small>
     </div>
   </div>
 
-  <div>
-    <input
-      id="id"
-      formControlName="id"
-      type="text"
-      placeholder="Buscar por ID"
-    />
-    <div *ngIf="filterForm.get('id')?.invalid && filterForm.get('id')?.touched">
+  <div class="filters__drinkName">
+    <p-inputGroup>
+      <p-inputGroupAddon>
+          <i class="pi pi-key"></i>
+      </p-inputGroupAddon>
+      <input pInputText formControlName="id" placeholder="Cocktail ID"/>
+    </p-inputGroup>
+    <div class="filters__errors" *ngIf="filterForm.get('id')?.invalid && filterForm.get('id')?.touched">
       <small *ngIf="filterForm.get('id')?.errors?.['pattern']">
-        Solo se permiten caracteres numéricos.
+        Only alphabetic characters are allowed.
       </small>
     </div>
   </div>

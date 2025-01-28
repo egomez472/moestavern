@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { CocktailFilterInterface } from '../../core/interfaces/cocktail-filter.interface';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { CocktailsService } from '../../core/services/cocktails/cocktails.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Cocktail } from '../../core/interfaces/cocktail.interface';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-cocktail-filter',
@@ -14,7 +16,10 @@ import { Cocktail } from '../../core/interfaces/cocktail.interface';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    InputGroupModule,
+    InputGroupAddonModule,
+    InputTextModule
   ],
   templateUrl: './cocktail-filter.component.html',
   styleUrl: './cocktail-filter.component.scss'

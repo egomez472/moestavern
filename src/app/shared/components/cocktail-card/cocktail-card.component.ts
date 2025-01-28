@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Cocktail } from '../../../core/interfaces/cocktail.interface';
 
 @Component({
   selector: 'app-cocktail-card',
@@ -8,5 +9,7 @@ import { Component } from '@angular/core';
   styleUrl: './cocktail-card.component.scss'
 })
 export class CocktailCardComponent {
+
+  @Input('cocktail') cocktail!: Cocktail;
 
 }

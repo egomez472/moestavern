@@ -1,5 +1,11 @@
-<app-cocktail-filter (filterChange)="onFilterChange($event)"></app-cocktail-filter>
+<app-cocktail-filter
+  (filterChange)="onFilterChange($event)">
+</app-cocktail-filter>
 
-<div *ngFor="let cocktail of cocktails">
-  {{cocktail.name}}
+<div class="flex gap-2">
+  <app-cocktail-card
+    *ngFor="let cocktail of cocktails"
+    [cocktail]="cocktail">
+  </app-cocktail-card>
 </div>
+
