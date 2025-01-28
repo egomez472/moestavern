@@ -1,3 +1,22 @@
-<div>
-  {{cocktail.name}}
-</div>
+<p-card class="card" header="{{cocktail.name}}" [style]="{'backgroundColor': '#3E2A2A', 'color': '#F0E68C'}">
+  <ng-template pTemplate="header">
+      <img class="card__image-cocktail" width="250px" alt="Card" src="{{cocktail.img}}" />
+  </ng-template>
+
+  <ng-template pTemplate="subtitle">
+    <div class="chips">
+      <p-chip
+        [style]="{'fontSize': '12px', 'backgroundColor': '#5C4B4B', 'color': '#F0E68C'}"
+        *ngFor="let ingredient of cocktail.ingredients"
+        label="{{ingredient.name}}"
+        class="chips__ingredient"/>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+      <div class="flex gap-3 mt-1">
+          <p-button label="Cancel" severity="secondary" [style]="{'backgroundColor': '#A0522D', 'color': 'white'}" />
+          <p-button label="Save" severity="primary" [style]="{'backgroundColor': '#8B4513', 'color': 'white'}"/>
+      </div>
+  </ng-template>
+</p-card>

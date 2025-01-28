@@ -23,14 +23,98 @@ p {
 }
 
 /* Estilos para botones */
+
+/* Estilos para botones primarios */
 .ui-button {
   background-color: var(--button-color);
   color: var(--text-color);
   border: 1px solid var(--border-color);
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
-.ui-button.ui-button-danger {
+.ui-button:hover {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+/* Estilos para botones secundarios */
+.ui-button-secondary {
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.ui-button-secondary:hover {
+  background-color: var(--border-color);
+  color: var(--text-color);
+}
+
+/* Estilos para botones de advertencia */
+.ui-button-danger {
   background-color: var(--warning-button-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.ui-button-danger:hover {
+  background-color: var(--text-color);
+  color: var(--warning-button-color);
+}
+
+/* Estilos para botones de éxito */
+.ui-button-success {
+  background-color: #28a745; /* Verde de éxito */
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.ui-button-success:hover {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+/* Estilos para botones de info */
+.ui-button-info {
+  background-color: #17a2b8; /* Azul de info */
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.ui-button-info:hover {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+/* Estilos para botones de enlace */
+.ui-button-link {
+  background-color: transparent;
+  color: var(--accent-color);
+  border: none;
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+
+.ui-button-link:hover {
+  color: var(--text-color);
+}
+
+/* Estilos para botones de carga */
+.ui-button-loading {
+  background-color: var(--button-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  position: relative;
+}
+
+.ui-button-loading .ui-spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Estilos para inputText */

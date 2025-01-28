@@ -11,7 +11,7 @@ describe('CocktailCardComponent', () => {
       imports: [CocktailCardComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(CocktailCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

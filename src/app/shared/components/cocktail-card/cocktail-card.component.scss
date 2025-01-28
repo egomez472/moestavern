@@ -1,0 +1,38 @@
+p-card {
+  max-height: 500px; /* Altura máxima para cada tarjeta */
+  overflow: hidden; /* Evita que el contenido interno se desborde */
+  background-color: var(--card-background-color); /* Color de fondo de la tarjeta */
+  border: 1px solid var(--border-color); /* Borde de la tarjeta */
+  border-radius: 4px; /* Bordes redondeados opcionales */
+  display: flex; /* Para centrar el contenido */
+  flex-direction: column; /* Para apilar el contenido verticalmente */
+  justify-content: space-between; /* Espacio entre los elementos internos */
+
+  .p-card-header img {
+    max-width: 250px!important;
+  }
+}
+
+.card {
+  max-width: 250px;
+  border: 2px solid #8B4513; /* Borde marrón para el card */
+  border-radius: 8px; /* Bordes redondeados */
+  .p-card-content {
+    display: none;
+  }
+
+  &__image-cocktail {
+    max-width: 250px;
+    border-radius: 8px 8px 0 0;
+  }
+}
+
+.chips {
+  display: flex!important;
+  flex-wrap: wrap!important;
+  gap: 0.3rem!important;
+}
+
+.chips__ingredient {
+  margin: 2px; /* Espaciado entre chips */
+}

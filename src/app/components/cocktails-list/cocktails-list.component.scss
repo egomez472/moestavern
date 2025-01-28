@@ -1,0 +1,12 @@
+.content {
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-auto-rows: 500px;
+    gap: 16px;
+    max-width: 100%;
+    overflow: hidden!important;
+    padding: 1rem;
+  }
+}
