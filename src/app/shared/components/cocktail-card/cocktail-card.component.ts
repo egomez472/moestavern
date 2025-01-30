@@ -1,9 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Cocktail } from '../../../core/interfaces/cocktail.interface';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cocktail-card',
@@ -15,10 +15,9 @@ import { CommonModule } from '@angular/common';
     CommonModule
   ],
   templateUrl: './cocktail-card.component.html',
-  styleUrl: './cocktail-card.component.scss'
+  styleUrl: './cocktail-card.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class CocktailCardComponent {
-
   @Input('cocktail') cocktail!: Cocktail;
-
 }

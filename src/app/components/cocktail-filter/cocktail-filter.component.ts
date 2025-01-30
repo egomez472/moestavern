@@ -59,7 +59,6 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
     const name = value;
     this.cocktailSvc.getCocktailByName(name).pipe(takeUntil(this.destroy$)).subscribe(
       (response: Cocktail[]) => {
-        console.log(response);
         this.filterChange.emit(response);
       }
     )

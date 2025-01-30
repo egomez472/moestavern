@@ -8,7 +8,6 @@ import { CocktailsRoutingModule } from './cocktails-routing.module';
   imports: [
     CommonModule,
     CocktailsRoutingModule
-
   ]
 })
 export class CocktailsModule { }
