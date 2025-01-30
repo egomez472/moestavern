@@ -104,7 +104,7 @@ describe('CocktailsListComponent', () => {
 
   it('onFilterChange debería recibir datos de tipo Cocktail[]', () => {
     const mockCocktails: Cocktail[] = [
-      { id: 1,img: '', name: 'Mojito', ingredients: [{name: 'Mojito', measure: '1/4'}], instructions: {EN:'',DE:'',ES:'',FR:'',IT:''}  },
+      { id: 1,img: '', name: 'Mojito', ingredients: [{name: 'Mojito', measure: '1/3'}], instructions: {EN:'',DE:'',ES:'',FR:'',IT:''}  },
       { id: 2,img: '', name: 'Daiquiri', ingredients: [{name: 'Daiquiri', measure: '1/4'}], instructions: {EN:'',DE:'',ES:'',FR:'',IT:''} }
     ];
 

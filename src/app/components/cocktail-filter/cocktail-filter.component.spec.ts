@@ -92,7 +92,7 @@ describe('CocktailFilterComponent', () => {
         id: 1,
         img:'',
         name: 'Mojito',
-        ingredients: [{name: 'mojito', measure: '1/4'}],
+        ingredients: [{name: 'mojito', measure: '1/2'}],
         instructions: {
           EN: 'string',
           DE: 'string',
