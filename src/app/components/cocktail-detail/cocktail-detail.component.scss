@@ -1,0 +1,89 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  min-height: calc(100vh - 100px);
+
+  &__button-box {
+    display: flex;
+    p-button {
+      margin-left: auto;
+    }
+  }
+
+  &__box {
+    display: flex;
+    height: fit-content;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: #715242;
+    border-radius: 8px;
+
+    &__img {
+      background-color: var(--background-color);
+      border-radius: 8px;
+      padding: 1rem;
+
+      img {
+        width: 300px;
+        border-radius: 8px;
+      }
+    }
+
+    &__cocktail-info {
+      display: flex;
+      flex-direction: column;
+      padding: 0 1rem;
+
+      &__ingredients {
+        display: flex;
+        flex-direction: column;
+      }
+
+      &__instructions {
+        span {
+          color: var(--accent-color);
+          font-weight: 600;
+        }
+
+        ul {
+          list-style: none;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          margin: 0px;
+          background-color: #654c3f;
+          color: #e0cee5;
+          padding: 0.5rem;
+        }
+      }
+    }
+  }
+}
+
+.p-datatable .p-datatable-thead tr th {
+  background-color: var(--background-color);
+  color: var(--accent-color);
+  padding: 0.5rem;
+  border: 0px;
+}
+
+.p-datatable .p-datatable-tbody tr td {
+  border: 0px;
+  padding: 0.5rem;
+  background-color: #654c3f;
+  color: #e0cee5;
+}
+
+.p-accordion .p-accordion-header .p-accordion-header-link {
+  padding: 0.5rem;
+  border: 0px;
+  background-color: var(--background-color);
+  color: var(--accent-color);
+}
+
+.p-accordion .p-accordion-content {
+  padding: 0px;
+  background-color: var(--background-color);
+  border: 0px;
+}

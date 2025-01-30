@@ -5,6 +5,7 @@ import { Cocktail } from '../../core/interfaces/cocktail.interface';
 import { CocktailCardComponent } from '../../shared/components/cocktail-card/cocktail-card.component';
 import { ContextMenu, ContextMenuModule } from 'primeng/contextmenu';
 import { MenuItem } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cocktails-list',
@@ -24,6 +25,10 @@ export class CocktailsListComponent implements OnInit{
   items: MenuItem[] | undefined;
   cocktails: Cocktail[] = [];
   selectedCocktail!: Cocktail | null;
+
+  constructor(
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.items = [
@@ -50,6 +55,7 @@ export class CocktailsListComponent implements OnInit{
 
   showDetails() {
     console.log('Detalle', this.selectedCocktail);
+    this.router.navigate(['cocktails', this.selectedCocktail?.id])
   }
 
   onFilterChange($event: Cocktail[]) {

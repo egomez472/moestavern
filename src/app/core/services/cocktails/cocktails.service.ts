@@ -45,4 +45,25 @@ export class CocktailsService {
     );
   };
 
+  /**
+ * Obtiene un cóctel.
+ *
+ * @param cocktailId - El id del cóctel que se desea buscar.
+ * @returns Un Observable que emite un objeto con el cóctel encontrado.
+ *
+ * @throws {Error} Si el id del cóctel es inválido, se registra un error en la consola.
+ *
+ * Este método realiza una solicitud HTTP a un servicio REST para obtener
+ * un cócteles que coincida con el id proporcionado. Utiliza
+ * `HttpParams` para establecer el parámetro de la consulta y
+ * transforma la respuesta con el pipe map utilizando la función `processCocktailResponse`.
+ */
+  getCocktailById(cocktailId: number): Observable<Cocktail | null> {
+    const params = new HttpParams().set('i', cocktailId.toString());
+
+    return this.restSvc.get<{drinks: any[]}>(EndpointsConstant.getCocktailById, params).pipe(
+      map((response) => processCocktailResponse(response)[0])
+    )
+  }
+
 }

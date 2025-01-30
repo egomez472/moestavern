@@ -1,1 +1,44 @@
-<p>cocktail-detail works!</p>
+<div class="content">
+  <div *ngIf="cocktail" class="content__box">
+    <div class="content__box__img">
+      <h3>{{cocktail.name}}</h3>
+      <img src="{{cocktail.img}}" alt="Image of the cocktail">
+    </div>
+    <div class="content__box__cocktail-info">
+      <div class="content__box__cocktail-info__ingredients">
+        <p-accordion [multiple]="true" [activeIndex]="[0]">
+          <p-accordionTab header="Ingredients">
+            <p-table [value]="ingredients" responsiveLayout="stack">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Drink</th>
+                  <th>Measure</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-ingredient>
+                <tr>
+                  <td>{{ingredient.name}}</td>
+                  <td>{{ingredient.measure}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </p-accordionTab>
+        </p-accordion>
+      </div>
+      <div class="content__box__cocktail-info__instructions">
+        <p-accordion [multiple]="true" [activeIndex]="[0]">
+          <p-accordionTab header="Instructions">
+            <ul>
+              <li>{{cocktail.instructions.EN}}</li>
+            </ul>
+          </p-accordionTab>
+        </p-accordion>
+      </div>
+    </div>
+  </div>
+  <div class="content__button-box">
+    <p-button severity="secondary" (click)="navigate('cocktails')">
+      Volver
+    </p-button>
+  </div>
+</div>
