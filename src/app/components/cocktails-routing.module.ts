@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouteReuseStrategy, RouterModule, Routes } from '@angular/router';
+import { Routetrategy } from '../core/utils/strategy/route-strategy';
 
 const routes: Routes = [
   {
@@ -14,6 +15,9 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [
+    {provide: RouteReuseStrategy, useClass: Routetrategy}
+  ]
 })
 export class CocktailsRoutingModule { }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { CocktailsService } from '../../core/services/cocktails/cocktails.service';
@@ -8,6 +8,7 @@ import { Cocktail } from '../../core/interfaces/cocktail.interface';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
+import { CocktailStateService } from '../../core/services/states/cocktail-state.service';
 
 @Component({
   selector: 'app-cocktail-filter',
@@ -32,7 +33,8 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private cocktailSvc: CocktailsService
+    private cocktailSvc: CocktailsService,
+    private cocktailState: CocktailStateService
   ) {
     this.filterForm = this.fb.group({
       name: ['',[Validators.pattern(/^[a-zA-Z\s]*$/), Validators.maxLength(50)]],
@@ -42,11 +44,16 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.filterForm.get("name")?.valueChanges.pipe(
+    this.initState();
+
+    this.filterForm.get('name')?.valueChanges.pipe(
       takeUntil(this.destroy$),
       debounceTime(500)
     ).subscribe(
-      value => this.getCocktailByName(value)
+      value => {
+        this.cocktailState.setSearchQuery(value);
+        this.getCocktailByName(value)
+      }
     )
   }
 
@@ -55,10 +62,28 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  @HostListener('window:scroll', ['$event'])
+  onMouseMove() {
+    const scrollY = window.scrollY;
+    this.cocktailState.setPosition(window.scrollX, scrollY);
+  }
+
+  initState() {
+    const state = this.cocktailState.getSearchQuery();
+    const scrolState = this.cocktailState.getPosition();
+    this.filterForm.get('name')?.setValue(state.query);
+    this.filterChange.emit(state.cocktails);
+
+    setTimeout(() => {
+      window.scrollTo(scrolState.x, scrolState.y)
+    }, 100);
+  }
+
   getCocktailByName(value: string) {
     const name = value;
     this.cocktailSvc.getCocktailByName(name).pipe(takeUntil(this.destroy$)).subscribe(
       (response: Cocktail[]) => {
+        this.cocktailState.setCocktailState(response);
         this.filterChange.emit(response);
       }
     )

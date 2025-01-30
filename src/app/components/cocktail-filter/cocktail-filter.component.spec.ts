@@ -5,14 +5,23 @@ import { CocktailsService } from '../../core/services/cocktails/cocktails.servic
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 import { Cocktail } from '../../core/interfaces/cocktail.interface';
+import { CocktailStateService } from '../../core/services/states/cocktail-state.service';
 
 describe('CocktailFilterComponent', () => {
   let component: CocktailFilterComponent;
   let fixture: ComponentFixture<CocktailFilterComponent>;
   let cocktailServiceSpy: jasmine.SpyObj<CocktailsService>;
+  let cocktailStateService: jasmine.SpyObj<CocktailStateService>;
 
   beforeEach(async () => {
     const cocktailSvcSpy = jasmine.createSpyObj('CocktailsService', ['getCocktailByName']);
+    const mockCocktailStateService = {
+      getSearchQuery: jasmine.createSpy('getSearchQuery').and.returnValue({ query: '', cocktails: [] }),
+      setSearchQuery: jasmine.createSpy('setSearchQuery'),
+      setPosition: jasmine.createSpy('setPosition'),
+      getPosition: jasmine.createSpy('getPosition').and.returnValue({ x: 0, y: 0 }),
+      setCocktailState: jasmine.createSpy('setCocktailState')
+    };
 
     await TestBed.configureTestingModule({
       imports: [
@@ -21,7 +30,8 @@ describe('CocktailFilterComponent', () => {
       ],
       providers: [
         FormBuilder,
-        {provide: CocktailsService, useValue: cocktailSvcSpy}
+        {provide: CocktailsService, useValue: cocktailSvcSpy},
+        {provide: CocktailStateService, useValue: mockCocktailStateService}
       ]
     }).compileComponents();
 
@@ -30,6 +40,7 @@ describe('CocktailFilterComponent', () => {
     fixture = TestBed.createComponent(CocktailFilterComponent);
     component = fixture.componentInstance;
     cocktailServiceSpy = TestBed.inject(CocktailsService) as jasmine.SpyObj<CocktailsService>;
+    cocktailStateService = TestBed.inject(CocktailStateService) as jasmine.SpyObj<CocktailStateService>;
   });
 
   it('debería crearse el componente', () => {
@@ -119,4 +130,19 @@ describe('CocktailFilterComponent', () => {
     component.ngOnDestroy();
     expect(cocktailServiceSpy.getCocktailByName).not.toHaveBeenCalled();
   });
+
+  it('should update position on scroll', () => {
+    // Simular el desplazamiento de la ventana
+    const scrollX = 100;
+    const scrollY = 200;
+    Object.defineProperty(window, 'scrollX', { value: scrollX });
+    Object.defineProperty(window, 'scrollY', { value: scrollY });
+
+    // Llamar al método onMouseMove
+    component.onMouseMove();
+
+    // Verificar que setPosition fue llamado con los valores correctos
+    expect(cocktailStateService.setPosition).toHaveBeenCalledWith(scrollX, scrollY);
+  });
+
 });
