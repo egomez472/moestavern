@@ -96,7 +96,6 @@ describe('CocktailFilterComponent', () => {
   });
 
   it('debería suscribirse a valueChanges en ngOnInit y llamar a getCocktailByName', fakeAsync(() => {
-    // Arrange
     const nameControl = component.filterForm.get('name');
     const mockResponse: Cocktail[] = [
       {
@@ -132,16 +131,13 @@ describe('CocktailFilterComponent', () => {
   });
 
   it('should update position on scroll', () => {
-    // Simular el desplazamiento de la ventana
     const scrollX = 100;
     const scrollY = 200;
     Object.defineProperty(window, 'scrollX', { value: scrollX });
     Object.defineProperty(window, 'scrollY', { value: scrollY });
 
-    // Llamar al método onMouseMove
     component.onMouseMove();
 
-    // Verificar que setPosition fue llamado con los valores correctos
     expect(cocktailStateService.setPosition).toHaveBeenCalledWith(scrollX, scrollY);
   });
 

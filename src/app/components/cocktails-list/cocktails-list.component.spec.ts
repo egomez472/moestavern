@@ -52,7 +52,7 @@ describe('CocktailsListComponent', () => {
   });
 
   it('deberia actualizar selectedCocktail cuando se activa onContextMenu', () => {
-    const cocktailMock: Cocktail = { id: 1, img: 'img.png', name: 'Mojito', ingredients: [{name: 'Rum', measure: '1 oz'}], instructions: {EN:'',DE:'',ES:'',FR:'',IT:''} }; // Mock de un cóctel
+    const cocktailMock: Cocktail = { id: 1, img: 'img.png', name: 'Mojito', ingredients: [{name: 'Rum', measure: '1 oz'}], instructions: {EN:'',DE:'',ES:'',FR:'',IT:''} };
     const eventMock = {
       originalEvent: new MouseEvent('click'),
       stopPropagation: () => {},
@@ -63,7 +63,7 @@ describe('CocktailsListComponent', () => {
   });
 
   it('deberia setear selectedCocktail en null cuando se activa onHide', () => {
-    component.selectedCocktail = { id: 1, img: 'img.png', name: 'Mojito', ingredients: [{name: 'Rum', measure: '1 oz'}], instructions: {EN:'',DE:'',ES:'',FR:'',IT:''} }; // Mock de un cóctel
+    component.selectedCocktail = { id: 1, img: 'img.png', name: 'Mojito', ingredients: [{name: 'Rum', measure: '1 oz'}], instructions: {EN:'',DE:'',ES:'',FR:'',IT:''} };
     component.onHide();
     expect(component.selectedCocktail).toBeNull();
   });

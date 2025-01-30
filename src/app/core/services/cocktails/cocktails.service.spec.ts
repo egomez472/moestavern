@@ -16,7 +16,7 @@ describe('CocktailsService', () => {
     const mockRestService = jasmine.createSpyObj('RestService', ['get']);
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule], // Importa el módulo de pruebas HTTP
+      imports: [HttpClientTestingModule],
       providers: [
         CocktailsService,
         { provide: RestService, useValue: mockRestService },
@@ -24,11 +24,11 @@ describe('CocktailsService', () => {
     });
     service = TestBed.inject(CocktailsService);
     restServiceMock = TestBed.inject(RestService) as jasmine.SpyObj<RestService>;
-    httpMock = TestBed.inject(HttpTestingController); // Inicializa httpMock
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
-    httpMock.verify(); // Verifica que no haya solicitudes pendientes
+    httpMock.verify();
   });
 
   it('debería crear el servicio', () => {

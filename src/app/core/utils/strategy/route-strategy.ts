@@ -1,12 +1,10 @@
-// custom-route-reuse-strategy.ts
 import { RouteReuseStrategy, ActivatedRouteSnapshot, DetachedRouteHandle } from '@angular/router';
 
 export class Routetrategy implements RouteReuseStrategy {
   private handlers: { [key: string]: DetachedRouteHandle } = {};
 
   shouldDetach(route: ActivatedRouteSnapshot): boolean {
-    // Aquí decides si debes guardar el componente
-    return true; // Cambia esto según tus necesidades
+    return true;
   }
 
   store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {

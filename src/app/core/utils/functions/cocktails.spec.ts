@@ -1,5 +1,5 @@
 import { Cocktail } from '../../interfaces/cocktail.interface';
-import { processCocktailResponse, extractIngredients, mapCocktail } from './cocktails'; // Ajusta la ruta según tu estructura de carpetas
+import { processCocktailResponse, extractIngredients, mapCocktail } from './cocktails';
 
 describe('Cocktail Processing Functions', () => {
 
@@ -34,8 +34,7 @@ describe('Cocktail Processing Functions', () => {
             strIngredient1: 'Rum',
             strMeasure1: '50ml',
             strIngredient2: 'Mint',
-            strMeasure2: '10 leaves',
-            // ... otros ingredientes
+            strMeasure2: '10 leaves'
           }
         ]
       };
