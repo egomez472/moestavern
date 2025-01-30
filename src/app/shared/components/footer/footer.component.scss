@@ -1,0 +1,30 @@
+.footer {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  gap: 0.5rem;
+  background-color: #732630;
+
+  &__page-link {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    height: calc(50px - 0.5rem);
+    padding: 0 1rem;
+    transition: 0.4s;
+    a {
+      text-decoration: none;
+      color: #a37963;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    &:hover {
+      background-color: #a3796347;
+      border-radius: 4px;
+      transition: 0.4s;
+      cursor: pointer;
+    }
+  }
+}
