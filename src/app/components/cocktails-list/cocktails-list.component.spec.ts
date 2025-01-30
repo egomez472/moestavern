@@ -18,8 +18,88 @@ describe('CocktailsListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('Deberia crearse correctamente', () => {
+  it('deberia crearse correctamente', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('deberia inicializar this.items en el ngOnInit', () => {
+    component.ngOnInit();
+
+    expect(component.items).toBeDefined();
+    expect(component.items?.length).toBe(2);
+    expect(component.items![0].label).toBe('Favorite');
+    expect(component.items![1].label).toBe('Details');
+  });
+
+  it('deberia llamar a addFavorite cuando la opcion Favorite es cliqueada', () => {
+    spyOn(component, 'addFavorite');
+    component.ngOnInit();
+    const favoriteItem = component.items![0];
+    const eventMock = {};
+    favoriteItem.command!(eventMock);
+
+    expect(component.addFavorite).toHaveBeenCalled();
+  });
+
+  it('deberia llamar a showDetails cuando la opcion Details es cliqueada', () => {
+    spyOn(component, 'showDetails');
+    component.ngOnInit();
+    const detailsItem = component.items![1];
+    const eventMock = {};
+    detailsItem.command!(eventMock);
+
+    expect(component.showDetails).toHaveBeenCalled();
+  });
+
+  it('deberia actualizar selectedCocktail cuando se activa onContextMenu', () => {
+    const cocktailMock: Cocktail = { id: 1, img: 'img.png', name: 'Mojito', ingredients: [{name: 'Rum', measure: '1 oz'}], instructions: {EN:'',DE:'',ES:'',FR:'',IT:''} }; // Mock de un cóctel
+    const eventMock = {
+      originalEvent: new MouseEvent('click'),
+      stopPropagation: () => {},
+      preventDefault: () => {}
+    };
+    component.onContextMenu(eventMock, cocktailMock);
+    expect(component.selectedCocktail).toEqual(cocktailMock);
+  });
+
+  it('deberia setear selectedCocktail en null cuando se activa onHide', () => {
+    component.selectedCocktail = { id: 1, img: 'img.png', name: 'Mojito', ingredients: [{name: 'Rum', measure: '1 oz'}], instructions: {EN:'',DE:'',ES:'',FR:'',IT:''} }; // Mock de un cóctel
+    component.onHide();
+    expect(component.selectedCocktail).toBeNull();
+  });
+
+  it('debería loguear selectedCocktail cuando addFavorite se llama', () => {
+    const cocktailMock: Cocktail = {
+      id: 1,
+      img: 'img.png',
+      name: 'Mojito',
+      ingredients: [{ name: 'Rum', measure: '1 oz' }],
+      instructions: { EN: '', DE: '', ES: '', FR: '', IT: '' }
+    };
+
+    component.selectedCocktail = cocktailMock;
+    const consoleLogSpy = spyOn(console, 'log');
+
+    component.addFavorite();
+
+    expect(consoleLogSpy).toHaveBeenCalledWith('Favorito', cocktailMock);
+  });
+
+  it('debería loguear selectedCocktail cuando showDetails se llama', () => {
+    const cocktailMock: Cocktail = {
+      id: 1,
+      img: 'img.png',
+      name: 'Mojito',
+      ingredients: [{ name: 'Rum', measure: '1 oz' }],
+      instructions: { EN: '', DE: '', ES: '', FR: '', IT: '' }
+    };
+
+    component.selectedCocktail = cocktailMock;
+    const consoleLogSpy = spyOn(console, 'log');
+
+    component.showDetails();
+
+    expect(consoleLogSpy).toHaveBeenCalledWith('Detalle', cocktailMock);
   });
 
   it('onFilterChange debería recibir datos de tipo Cocktail[]', () => {
