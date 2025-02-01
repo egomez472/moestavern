@@ -1,4 +1,9 @@
 <div class="content">
+  <div class="content__button-box">
+    <p-button severity="secondary" (click)="navigate('cocktails')">
+      Volver
+    </p-button>
+  </div>
   <div *ngIf="cocktail" class="content__box">
     <div class="content__box__img">
       <h3>{{cocktail.name}}</h3>
@@ -35,10 +40,5 @@
         </p-accordion>
       </div>
     </div>
-  </div>
-  <div class="content__button-box">
-    <p-button severity="secondary" (click)="navigate('cocktails')">
-      Volver
-    </p-button>
   </div>
 </div>

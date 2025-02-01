@@ -7,8 +7,9 @@
   height: 55px;
   gap: 1rem;
 
-  @media (max-width: 655px) {
+  @media (max-width: 525px) {
     flex-direction: column;
+    height: unset;
   }
 
   &__drinkName {

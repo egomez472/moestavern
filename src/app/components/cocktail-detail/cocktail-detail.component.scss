@@ -3,12 +3,13 @@
   flex-direction: column;
   padding: 1rem;
   min-height: calc(100vh - 100px);
+  align-items: center;
+  gap: 0.5rem;
 
   &__button-box {
     display: flex;
-    p-button {
-      margin-left: auto;
-    }
+    width: 100%;
+    max-width: 65rem;
   }
 
   &__box {
@@ -16,8 +17,14 @@
     height: fit-content;
     margin-bottom: 1rem;
     padding: 1rem;
+    gap: 1rem;
     background-color: #715242;
     border-radius: 8px;
+    max-width: 65rem;
+    @media (max-width: 645px) {
+      flex-direction: column;
+      gap: 1rem;
+    }
 
     &__img {
       background-color: var(--background-color);
@@ -25,7 +32,8 @@
       padding: 1rem;
 
       img {
-        width: 300px;
+        width: 100%;
+        max-width: 350px;
         border-radius: 8px;
       }
     }
@@ -33,7 +41,12 @@
     &__cocktail-info {
       display: flex;
       flex-direction: column;
-      padding: 0 1rem;
+      gap: 1rem;
+      min-width: 30rem;
+
+      @media(max-width: 865px) {
+        min-width: unset;
+      }
 
       &__ingredients {
         display: flex;
