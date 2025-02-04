@@ -41,12 +41,12 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
     this.filterForm = this.fb.group({
       name: ['',[Validators.pattern(/^[a-zA-Z\s]*$/), Validators.maxLength(50)]],
       ingredient: ['', [Validators.pattern(/^[a-zA-Z\s]*$/), Validators.maxLength(50)]],
-      id: [null, [Validators.pattern(/^\d*$/)]]
+      id: ['', [Validators.pattern(/^\d*$/)]]
     });
   }
 
   ngOnInit(): void {
-    this.initState(this.cocktailState.getSearchQuery(), this.cocktailState.getPosition());
+    this.initState(this.cocktailState.getState(), this.cocktailState.getPosition());
 
     this.filterForm.get('name')?.valueChanges.pipe(
       takeUntil(this.destroy$),
@@ -55,6 +55,16 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
       value => {
         this.cocktailState.setSearchQuery(value);
         this.getCocktailByName(value)
+      }
+    )
+
+    this.filterForm.get('id')?.valueChanges.pipe(
+      takeUntil(this.destroy$),
+      debounceTime(500)
+    ).subscribe(
+      value => {
+        this.cocktailState.setIdState(value);
+        this.getCocktailById(value)
       }
     )
   }
@@ -70,24 +80,35 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
     this.cocktailState.setPosition(window.scrollX, scrollY);
   }
 
-  initState(cocktailState: SearchQuery, position: Position) {
+  initState(cocktailState: SearchQuery, positionState: Position) {
     const state = cocktailState;
-    console.log(state);
 
-    const scrolState = position;
-    this.filterForm.get('name')?.setValue(state.query);
+    const position = positionState;
+    this.filterForm.patchValue({
+      name: state.query,
+      ingredient: state.ingredient,
+      id: state.id
+    })
     this.filterChange.emit(state.cocktails);
 
-    console.log(scrolState);
-
     setTimeout(() => {
-      window.scrollTo(scrolState.x, scrolState.y)
+      window.scrollTo(position.x, position.y)
     }, 50);
   }
 
   getCocktailByName(value: string) {
     const name = value;
     this.cocktailSvc.getCocktailByName(name).pipe(takeUntil(this.destroy$)).subscribe(
+      (response: Cocktail[]) => {
+        this.cocktailState.setCocktailState(response);
+        this.filterChange.emit(response);
+      }
+    )
+  }
+
+  getCocktailById(id: number) {
+    const _id = id;
+    this.cocktailSvc.getCocktailById(_id).pipe(takeUntil(this.destroy$)).subscribe(
       (response: Cocktail[]) => {
         this.cocktailState.setCocktailState(response);
         this.filterChange.emit(response);

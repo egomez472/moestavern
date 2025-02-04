@@ -45,8 +45,8 @@ export class CocktailDetailComponent implements OnInit, OnDestroy {
     this.cocktailsSvc.getCocktailById(cocktailId).pipe(takeUntil(this.destroy$)).subscribe(
       cocktailDetail => {
         if(cocktailDetail !== null) {
-          this.cocktail = cocktailDetail;
-          this.ingredients = cocktailDetail.ingredients;
+          this.cocktail = cocktailDetail[0];
+          this.ingredients = this.cocktail.ingredients;
           console.log(this.ingredients)
         }
       }

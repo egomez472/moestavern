@@ -14,6 +14,8 @@ export class CocktailStateService {
 
   private cocktailStateSubject: BehaviorSubject<SearchQuery> = new BehaviorSubject<SearchQuery>({
     query: '',
+    id: '',
+    ingredient: '',
     cocktails: []
   });
   public cocktailState$: Observable<SearchQuery> = this.cocktailStateSubject.asObservable();
@@ -46,14 +48,22 @@ export class CocktailStateService {
     this.cocktailStateSubject.next({ ...this.cocktailStateSubject.value, query });
   }
 
+  setIdState(id: string) {
+    this.cocktailStateSubject.next({...this.cocktailStateSubject.value, id});
+  }
+
+  setIngredientState(ingredient: string) {
+    this.cocktailStateSubject.next({...this.cocktailStateSubject.value, ingredient});
+  }
+
   setCocktailState(cocktails: Cocktail[]) {
     this.cocktailStateSubject.next({ ...this.cocktailStateSubject.value, cocktails });
   }
 
-  getSearchQuery(): SearchQuery {
-    const state = this.storage.get(COCKTAIL_KEY)
+  getState(): SearchQuery {
+    const state = this.storage.get(COCKTAIL_KEY);
     if(state) {
-      this.cocktailStateSubject.next({ query: state.query, cocktails: state.cocktails });
+      this.cocktailStateSubject.next(state);
     }
     return this.cocktailStateSubject.value;
   }

@@ -58,11 +58,16 @@ export class CocktailsService {
  * `HttpParams` para establecer el parámetro de la consulta y
  * transforma la respuesta con el pipe map utilizando la función `processCocktailResponse`.
  */
-  getCocktailById(cocktailId: number): Observable<Cocktail | null> {
+  getCocktailById(cocktailId: number): Observable<Cocktail[]> {
+    if (cocktailId <= 0 || isNaN(cocktailId)) {
+      console.error('El ID del cóctel debe ser un número positivo.');
+      return of([]);
+    }
+
     const params = new HttpParams().set('i', cocktailId.toString());
 
     return this.restSvc.get<{drinks: any[]}>(EndpointsConstant.getCocktailById, params).pipe(
-      map((response) => processCocktailResponse(response)[0])
+      map((response) => processCocktailResponse(response))
     )
   }
 
