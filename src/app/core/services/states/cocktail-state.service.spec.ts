@@ -12,42 +12,42 @@ describe('CocktailStateService', () => {
     service = TestBed.inject(CocktailStateService);
   });
 
-  it('should be created', () => {
+  it('deberia crearse el servicio', () => {
     expect(service).toBeTruthy();
   });
 
   describe('setSearchQuery', () => {
-    it('should set the search query', () => {
+    it('deberia setear la query en el state', () => {
       const query = 'Mojito';
       service.setSearchQuery(query);
-      const searchQuery: SearchQuery = service.getSearchQuery();
+      const searchQuery: SearchQuery = service.getState();
       expect(searchQuery.query).toBe(query);
     });
   });
 
   describe('setCocktailState', () => {
-    it('should set the cocktails', () => {
+    it('deberia setear y retornar los cocktails en el state', () => {
       const cocktails: Cocktail[] = [
         { id: 1, img: 'img.png', name: 'Mojito', ingredients: [{name: 'Rum', measure: '1 oz'}], instructions: {EN:'',DE:'',ES:'',FR:'',IT:''} },
         { id: 2, img: 'img.png', name: 'Daiquiri', ingredients: [{name: 'Rum', measure: '1 oz'}], instructions: {EN:'',DE:'',ES:'',FR:'',IT:''} }
       ];
       service.setCocktailState(cocktails);
-      const searchQuery: SearchQuery = service.getSearchQuery();
+      const searchQuery: SearchQuery = service.getState();
       expect(searchQuery.cocktails).toEqual(cocktails);
     });
   });
 
   describe('getSearchQuery', () => {
-    it('should return the current search query', () => {
+    it('deberia setear y retornar la query actual', () => {
       const query = 'Margarita';
       service.setSearchQuery(query);
-      const searchQuery: SearchQuery = service.getSearchQuery();
+      const searchQuery: SearchQuery = service.getState();
       expect(searchQuery.query).toBe(query);
     });
   });
 
   describe('setPosition', () => {
-    it('should set the position', () => {
+    it('deberia setear la posicion', () => {
       const x = 10;
       const y = 20;
       service.setPosition(x, y);
@@ -57,7 +57,7 @@ describe('CocktailStateService', () => {
   });
 
   describe('getPosition', () => {
-    it('should return the current position', () => {
+    it('deberia retornar la posicion', () => {
       const x = 5;
       const y = 15;
       service.setPosition(x, y);
@@ -65,4 +65,22 @@ describe('CocktailStateService', () => {
       expect(position).toEqual({ x, y });
     });
   });
+
+  describe('getIdState', () => {
+    it('deberia setear y retornar el id del state', () => {
+      const id = '20';
+      service.setIdState(id);
+      const idState: SearchQuery = service.getState();
+      expect(idState.id).toEqual(id);
+    });
+  });
+
+  describe('getIngredientState', () => {
+    it('deberia setear y retornar el ingrediente del state', () => {
+      const ingredient = 'Rum';
+      service.setIngredientState(ingredient);
+      const ingredientState: SearchQuery = service.getState();
+      expect(ingredientState.ingredient).toEqual(ingredient);
+    });
+  })
 });

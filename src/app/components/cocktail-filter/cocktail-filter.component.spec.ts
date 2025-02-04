@@ -3,7 +3,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { CocktailFilterComponent } from './cocktail-filter.component';
 import { CocktailsService } from '../../core/services/cocktails/cocktails.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { of } from 'rxjs';
+import { debounceTime, of, Subject, takeUntil } from 'rxjs';
 import { Cocktail } from '../../core/interfaces/cocktail.interface';
 import { CocktailStateService } from '../../core/services/states/cocktail-state.service';
 
@@ -12,16 +12,19 @@ describe('CocktailFilterComponent', () => {
   let fixture: ComponentFixture<CocktailFilterComponent>;
   let cocktailServiceSpy: jasmine.SpyObj<CocktailsService>;
   let cocktailStateService: jasmine.SpyObj<CocktailStateService>;
+  let destroy$: Subject<void>;
+  let mockCocktailStateService = {
+    getState: jasmine.createSpy('getState').and.returnValue({ query: '', id: '1', ingredient: '', cocktails: [] }),
+    setSearchQuery: jasmine.createSpy('setSearchQuery'),
+    setPosition: jasmine.createSpy('setPosition'),
+    getPosition: jasmine.createSpy('getPosition').and.returnValue({ x: 0, y: 0 }),
+    setCocktailState: jasmine.createSpy('setCocktailState'),
+    setIdState: jasmine.createSpy('setIdState')
+  };
 
   beforeEach(async () => {
-    const cocktailSvcSpy = jasmine.createSpyObj('CocktailsService', ['getCocktailByName']);
-    const mockCocktailStateService = {
-      getSearchQuery: jasmine.createSpy('getSearchQuery').and.returnValue({ query: '', cocktails: [] }),
-      setSearchQuery: jasmine.createSpy('setSearchQuery'),
-      setPosition: jasmine.createSpy('setPosition'),
-      getPosition: jasmine.createSpy('getPosition').and.returnValue({ x: 0, y: 0 }),
-      setCocktailState: jasmine.createSpy('setCocktailState')
-    };
+    destroy$ = new Subject<void>();
+    const cocktailSvcSpy = jasmine.createSpyObj('CocktailsService', ['getCocktailByName', 'getCocktailById']);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -41,6 +44,11 @@ describe('CocktailFilterComponent', () => {
     component = fixture.componentInstance;
     cocktailServiceSpy = TestBed.inject(CocktailsService) as jasmine.SpyObj<CocktailsService>;
     cocktailStateService = TestBed.inject(CocktailStateService) as jasmine.SpyObj<CocktailStateService>;
+  });
+
+  afterEach(() => {
+    destroy$.next();
+    destroy$.complete();
   });
 
   it('debería crearse el componente', () => {
@@ -124,13 +132,42 @@ describe('CocktailFilterComponent', () => {
     expect(cocktailServiceSpy.getCocktailByName).toHaveBeenCalledWith('Mojito');
   }));
 
+  it('debería suscribirse a valueChanges en ngOnInit y llamar a getCocktailById', fakeAsync(() => {
+    const idControl = component.filterForm.get('id');
+    const mockResponse: Cocktail[] = [
+      {
+        id: 1,
+        img:'',
+        name: 'Mojito',
+        ingredients: [{name: 'mojito', measure: '1/2'}],
+        instructions: {
+          EN: 'string',
+          DE: 'string',
+          ES: 'string',
+          FR: 'string',
+          IT: 'string'
+        }
+      }
+    ];
+    cocktailServiceSpy.getCocktailById.and.returnValue(of(mockResponse));
+
+    spyOn(component, 'getCocktailById').and.callThrough();
+
+    component.ngOnInit();
+    idControl?.setValue(1);
+
+    tick(500);
+    expect(component.getCocktailById).toHaveBeenCalledWith(1);
+    expect(cocktailServiceSpy.getCocktailById).toHaveBeenCalledWith(1);
+  }));
+
   it('debería limpiar el observable en ngOnDestroy', () => {
     component.ngOnInit();
     component.ngOnDestroy();
     expect(cocktailServiceSpy.getCocktailByName).not.toHaveBeenCalled();
   });
 
-  it('should update position on scroll', () => {
+  it('deberia actualizar la posicion del scroll', () => {
     const scrollX = 100;
     const scrollY = 200;
     Object.defineProperty(window, 'scrollX', { value: scrollX });

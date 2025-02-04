@@ -51,7 +51,7 @@ describe('CocktailDetailComponent', () => {
         IT: 'string'
       }
     };
-    cocktailServiceSpy.getCocktailById.and.returnValue(of(cocktailDetail));
+    cocktailServiceSpy.getCocktailById.and.returnValue(of([cocktailDetail]));
 
     component.ngOnInit();
 

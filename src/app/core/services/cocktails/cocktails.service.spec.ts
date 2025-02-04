@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { EndpointsConstant } from '../../utils/constants';
 import { HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { processCocktailResponse } from '../../utils/functions/cocktails';
 
 describe('CocktailsService', () => {
   let service: CocktailsService;
@@ -45,6 +46,14 @@ describe('CocktailsService', () => {
   it('debería devolver un array vacío si el nombre del cóctel es solo espacios', (done) => {
     service.getCocktailByName('   ').subscribe((result) => {
       expect(result).toEqual([]);
+      done();
+    });
+  });
+
+  it('debería devolver un array vacío si el id del cóctel es inválido', (done) => {
+    const invalidId = -1; // Un ID que no debería devolver resultados
+    service.getCocktailById(invalidId).subscribe((result) => {
+      expect(result).toEqual([]); // Asegúrate de que el resultado sea un array vacío
       done();
     });
   });
