@@ -9,6 +9,8 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { CocktailStateService } from '../../core/services/states/cocktail-state.service';
+import { SearchQuery } from '../../core/interfaces/search-query.interface';
+import { Position } from '../../core/interfaces/position.interface';
 
 @Component({
   selector: 'app-cocktail-filter',
@@ -44,7 +46,7 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.initState();
+    this.initState(this.cocktailState.getSearchQuery(), this.cocktailState.getPosition());
 
     this.filterForm.get('name')?.valueChanges.pipe(
       takeUntil(this.destroy$),
@@ -68,15 +70,19 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
     this.cocktailState.setPosition(window.scrollX, scrollY);
   }
 
-  initState() {
-    const state = this.cocktailState.getSearchQuery();
-    const scrolState = this.cocktailState.getPosition();
+  initState(cocktailState: SearchQuery, position: Position) {
+    const state = cocktailState;
+    console.log(state);
+
+    const scrolState = position;
     this.filterForm.get('name')?.setValue(state.query);
     this.filterChange.emit(state.cocktails);
 
+    console.log(scrolState);
+
     setTimeout(() => {
       window.scrollTo(scrolState.x, scrolState.y)
-    }, 100);
+    }, 50);
   }
 
   getCocktailByName(value: string) {
