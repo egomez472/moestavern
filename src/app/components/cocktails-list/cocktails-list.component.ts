@@ -54,7 +54,9 @@ export class CocktailsListComponent implements OnInit{
   }
 
   showDetails() {
-    console.log('Detalle', this.selectedCocktail);
+    if(!this.selectedCocktail) {
+      return;
+    }
     this.router.navigate(['cocktails', this.selectedCocktail?.id])
   }
 

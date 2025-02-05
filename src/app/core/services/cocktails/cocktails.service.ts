@@ -32,7 +32,6 @@ export class CocktailsService {
  * transforma la respuesta con el pipe map utilizando la función `processCocktailResponse`.
  */
   getCocktailByName(cocktailName: string): Observable<Cocktail[]> {
-
     if (!cocktailName || cocktailName.trim() === '') {
       console.error('El nombre del cóctel no puede estar vacío.');
       return of([]);
@@ -62,13 +61,39 @@ export class CocktailsService {
     if (cocktailId <= 0 || isNaN(cocktailId)) {
       console.error('El ID del cóctel debe ser un número positivo.');
       return of([]);
-    }
+    };
 
     const params = new HttpParams().set('i', cocktailId.toString());
 
     return this.restSvc.get<{drinks: any[]}>(EndpointsConstant.getCocktailById, params).pipe(
       map((response) => processCocktailResponse(response))
-    )
+    );
+  }
+
+  /**
+ * Obtiene un cóctel por ingrediente.
+ *
+ * @param ingredient - El ingrediente del cóctel que se desea buscar.
+ * @returns Un Observable que emite un objeto con el cóctel encontrado.
+ *
+ * @throws {Error} Si el ingrediente del cóctel es inválido, se registra un error en la consola.
+ *
+ * Este método realiza una solicitud HTTP a un servicio REST para obtener
+ * un cócteles que coincida con un ingrediente proporcionado. Utiliza
+ * `HttpParams` para establecer el parámetro de la consulta y
+ * transforma la respuesta con el pipe map utilizando la función `processCocktailResponse`.
+ */
+  getCocktailByIngredient(ingredient: string): Observable<Cocktail[]> {
+    if (!ingredient || ingredient.trim() === '') {
+      console.error('El ingrediente no puede estar vacío.');
+      return of([]);
+    };
+
+    const params = new HttpParams().set('i', ingredient);
+
+    return this.restSvc.get<{drinks: any[]}>(EndpointsConstant.getCocktailByIngredient, params).pipe(
+      map((response) => processCocktailResponse(response))
+    );
   }
 
 }

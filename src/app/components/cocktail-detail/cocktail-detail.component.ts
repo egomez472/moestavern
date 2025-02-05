@@ -47,7 +47,6 @@ export class CocktailDetailComponent implements OnInit, OnDestroy {
         if(cocktailDetail !== null) {
           this.cocktail = cocktailDetail[0];
           this.ingredients = this.cocktail.ingredients;
-          console.log(this.ingredients)
         }
       }
     );

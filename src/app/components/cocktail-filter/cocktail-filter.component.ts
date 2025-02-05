@@ -56,6 +56,16 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
         this.cocktailState.setSearchQuery(value);
         this.getCocktailByName(value)
       }
+    );
+
+    this.filterForm.get('ingredient')?.valueChanges.pipe(
+      takeUntil(this.destroy$),
+      debounceTime(500)
+    ).subscribe(
+      value => {
+        this.cocktailState.setIngredientState(value);
+        this.getCocktailByIngredient(value)
+      }
     )
 
     this.filterForm.get('id')?.valueChanges.pipe(
@@ -66,7 +76,7 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
         this.cocktailState.setIdState(value);
         this.getCocktailById(value)
       }
-    )
+    );
   }
 
   ngOnDestroy(): void {
@@ -96,24 +106,33 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
     }, 50);
   }
 
-  getCocktailByName(value: string) {
-    const name = value;
+  getCocktailByName(name: string) {
     this.cocktailSvc.getCocktailByName(name).pipe(takeUntil(this.destroy$)).subscribe(
       (response: Cocktail[]) => {
-        this.cocktailState.setCocktailState(response);
-        this.filterChange.emit(response);
+        this.setAndEmit(response);
       }
     )
   }
 
   getCocktailById(id: number) {
-    const _id = id;
-    this.cocktailSvc.getCocktailById(_id).pipe(takeUntil(this.destroy$)).subscribe(
+    this.cocktailSvc.getCocktailById(id).pipe(takeUntil(this.destroy$)).subscribe(
       (response: Cocktail[]) => {
-        this.cocktailState.setCocktailState(response);
-        this.filterChange.emit(response);
+        this.setAndEmit(response);
       }
     )
+  }
+
+  getCocktailByIngredient(ingredient: string) {
+    this.cocktailSvc.getCocktailByIngredient(ingredient).pipe(takeUntil(this.destroy$)).subscribe(
+      (response: Cocktail[]) => {
+        this.setAndEmit(response);
+      }
+    )
+  }
+
+  setAndEmit(data: Cocktail[]) {
+    this.cocktailState.setCocktailState(data);
+    this.filterChange.emit(data);
   }
 
 }
