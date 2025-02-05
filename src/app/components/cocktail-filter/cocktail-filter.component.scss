@@ -12,7 +12,30 @@
     height: unset;
   }
 
-  &__drinkName {
+  &__control-box {
+
+    &__button-favorite {
+      button {
+        transition: 0.5s ease;
+        border: 1px var(--secondary);
+
+        &:focus {
+          box-shadow: none;
+        }
+        &:focus-visible {
+          box-shadow: none;
+        }
+      }
+
+      &.active {
+        button {
+          transition: 0.5s ease;
+          background-color: #475569;
+          border: none;
+          box-shadow: inset 0px 0px 8px 0px #303a48e3;
+        }
+      }
+    }
 
     @media (max-width: 655px) {
       width: 100%;

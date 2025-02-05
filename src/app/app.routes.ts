@@ -9,5 +9,9 @@ export const routes: Routes = [
   {
     path: 'cocktails',
     loadChildren: () => import('./components/cocktails.module').then(m => m.CocktailsModule)
+  },
+  {
+    path: '**',
+    redirectTo: '/cocktails'
   }
 ];

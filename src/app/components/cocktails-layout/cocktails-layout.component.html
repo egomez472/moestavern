@@ -10,7 +10,8 @@
         @for(cocktail of cocktails; track cocktail) {
           <app-cocktail-card
             [cocktail]="cocktail"
-            (contextmenu)="onContextMenu($event, cocktail)">
+            (contextmenu)="onContextMenu($event, cocktail)"
+            (click)="showDetails(cocktail)">
           </app-cocktail-card>
         }
     </div>

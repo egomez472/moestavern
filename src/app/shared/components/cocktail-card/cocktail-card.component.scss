@@ -7,6 +7,13 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  transition: 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0px 0px 8px #841198;
+    transition: 0.3s;
+  }
 
   .p-card-body {
     display: flex;

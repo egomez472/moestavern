@@ -63,9 +63,8 @@
       </div>
     }
   </div>
-
   <div class="filters__control-box">
-    <p-button severity="secondary" icon="pi pi-heart" (click)="goToFavoriteList()" />
+    <p-button [ngClass]="{'active': isFavoriteList}" class="filters__control-box__button-favorite" severity="secondary" icon="pi pi-heart" (click)="goToFavoriteList()" />
   </div>
 </div>
 

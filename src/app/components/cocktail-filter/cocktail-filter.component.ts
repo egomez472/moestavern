@@ -10,9 +10,11 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { CocktailStateService } from '../../core/services/states/cocktail-state.service';
 import { SearchQuery } from '../../core/interfaces/search-query.interface';
-import { Position } from '../../core/interfaces/position.interface';
 import { ButtonModule } from 'primeng/button';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { StorageService } from '../../core/services/storage.service';
+
+const COCKTAIL_KEY: string = 'cocktailState';
 
 @Component({
   selector: 'app-cocktail-filter',
@@ -28,7 +30,8 @@ import { Router } from '@angular/router';
     ButtonModule
   ],
   templateUrl: './cocktail-filter.component.html',
-  styleUrl: './cocktail-filter.component.scss'
+  styleUrl: './cocktail-filter.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class CocktailFilterComponent implements OnInit, OnDestroy {
   @Output() filterChange = new EventEmitter<Cocktail[]>();
@@ -41,12 +44,15 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   filterForm: FormGroup;
+  isFavoriteList: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private cocktailSvc: CocktailsService,
     private cocktailState: CocktailStateService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private storage: StorageService
   ) {
     this.filterForm = this.fb.group({
       name: ['',[Validators.pattern(/^[a-zA-Z\s]*$/), Validators.maxLength(50)]],
@@ -56,7 +62,13 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.initState(this.cocktailState.getState(), this.cocktailState.getPosition());
+    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((params: any) => {
+      let fav = params.params.favs ? true : false;
+      this.isFavoriteList = fav;
+      this.showFavorites();
+    });
+
+    this.initState();
 
     this.filterForm.get('name')?.valueChanges.pipe(
       takeUntil(this.destroy$),
@@ -89,25 +101,30 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
     );
   }
 
+  ngAfterViewInit(): void {
+    this.initPositionState();
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  initState(cocktailState: SearchQuery, positionState: Position) {
-    const state = cocktailState;
+  initPositionState() {
+    const position = this.cocktailState.getPosition();
+    window.scrollTo(position.x, position.y)
+  }
 
-    const position = positionState;
+  initState() {
+    const state: SearchQuery = this.cocktailState.getState()
+
+    this.filterChange.emit(this.isFavoriteList ? state.favorites : state.cocktails);
+
     this.filterForm.patchValue({
       name: state.query,
       ingredient: state.ingredient,
       id: state.id
     })
-    this.filterChange.emit(state.cocktails);
-
-    setTimeout(() => {
-      window.scrollTo(position.x, position.y)
-    }, 50);
   }
 
   getCocktailByName(name: string) {
@@ -134,12 +151,27 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
     )
   }
 
-  setAndEmit(data: Cocktail[]) {
-    this.cocktailState.setCocktailState(data);
+  setAndEmit(data: Cocktail[], fav: boolean = false) {
+    if(!fav) {
+      this.isFavoriteList = false;
+      this.router.navigate(['cocktails'])
+      this.cocktailState.setCocktailState(data);
+    } else {
+      this.cocktailState.setFavoriteListState(data);
+    }
     this.filterChange.emit(data);
   }
 
   goToFavoriteList() {
-    this.router.navigate(['cocktails/favorites'])
+    this.isFavoriteList = !this.isFavoriteList;
+    this.router.navigate(['cocktails'], this.isFavoriteList ? {queryParams: {favs: true}} : {});
+    this.showFavorites();
+  }
+
+  showFavorites() {
+    let cocktails: Cocktail[] = this.isFavoriteList ?
+      this.storage.get(COCKTAIL_KEY).favorites :
+      this.storage.get(COCKTAIL_KEY).cocktails;
+    this.setAndEmit(cocktails, this.isFavoriteList);
   }
 }

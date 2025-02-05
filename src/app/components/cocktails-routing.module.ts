@@ -5,13 +5,7 @@ import { Routetrategy } from '../core/utils/strategy/route-strategy';
 const routes: Routes = [
   {
     path:'',
-    loadComponent: () => import('./cocktails-layout/cocktails-layout.component').then(c => c.CocktailsLayoutComponent),
-    children: [
-      {
-        path: 'favorites',
-        loadComponent: () => import('./favorites/favorites.component').then(c => c.FavoritesComponent)
-      }
-    ]
+    loadComponent: () => import('./cocktails-layout/cocktails-layout.component').then(c => c.CocktailsLayoutComponent)
   },
   {
     path: ':id',

@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { Cocktail } from '../../interfaces/cocktail.interface';
 import { SearchQuery } from '../../interfaces/search-query.interface';
 import { Position } from '../../interfaces/position.interface';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { StorageService } from '../storage.service';
 
 const COCKTAIL_KEY: string = 'cocktailState';
 const POSITION_KEY: string = 'statePosition';
+const FAVORITES_KEY: string = 'favorites';
 @Injectable({
   providedIn: 'root'
 })
@@ -16,7 +17,8 @@ export class CocktailStateService {
     query: '',
     id: '',
     ingredient: '',
-    cocktails: []
+    cocktails: [],
+    favorites: [],
   });
   public cocktailState$: Observable<SearchQuery> = this.cocktailStateSubject.asObservable();
 
@@ -41,14 +43,14 @@ export class CocktailStateService {
     }
     this.position$.subscribe((response: Position) => {
       this.storage.save(POSITION_KEY, response);
-    })
+    });
   };
 
   setSearchQuery(query: string) {
     this.cocktailStateSubject.next({ ...this.cocktailStateSubject.value, query });
   }
 
-  setIdState(id: string) {
+  setIdState(id: number) {
     this.cocktailStateSubject.next({...this.cocktailStateSubject.value, id});
   }
 
@@ -58,6 +60,21 @@ export class CocktailStateService {
 
   setCocktailState(cocktails: Cocktail[]) {
     this.cocktailStateSubject.next({ ...this.cocktailStateSubject.value, cocktails });
+  }
+
+  addFavoriteState(cocktail: Cocktail) {
+    const favorites = this.getState().favorites;
+    const exists = favorites.some(_cocktail => _cocktail.id === cocktail.id);
+    if(exists) {
+      console.log('El coctel ya existe en favoritos');
+    } else {
+      favorites.unshift(cocktail);
+      this.cocktailStateSubject.next({ ...this.cocktailStateSubject.value, favorites });
+    }
+  }
+
+  setFavoriteListState(favorites: Cocktail[]) {
+    this.cocktailStateSubject.next({ ...this.cocktailStateSubject.value, favorites });
   }
 
   getState(): SearchQuery {
