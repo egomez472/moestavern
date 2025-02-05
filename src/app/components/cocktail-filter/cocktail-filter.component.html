@@ -1,6 +1,6 @@
 <div class="filters" [formGroup]="filterForm">
 
-  <div class="filters__drinkName">
+  <div class="filters__control-box">
     <p-inputGroup>
       <p-inputGroupAddon>
           <i class="pi pi-trophy"></i>
@@ -23,7 +23,7 @@
     }
   </div>
 
-  <div class="filters__drinkName">
+  <div class="filters__control-box">
     <p-inputGroup>
       <p-inputGroupAddon>
           <i class="pi pi-chart-scatter"></i>
@@ -46,7 +46,7 @@
     }
   </div>
 
-  <div class="filters__drinkName">
+  <div class="filters__control-box">
     <p-inputGroup>
       <p-inputGroupAddon>
           <i class="pi pi-key"></i>
@@ -62,6 +62,10 @@
         }
       </div>
     }
+  </div>
+
+  <div class="filters__control-box">
+    <p-button severity="secondary" icon="pi pi-heart" (click)="goToFavoriteList()" />
   </div>
 </div>
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, signal, ViewChild } from '@angular/core';
 import { CocktailFilterComponent } from '../cocktail-filter/cocktail-filter.component';
 import { CommonModule } from '@angular/common';
 import { Cocktail } from '../../core/interfaces/cocktail.interface';
@@ -16,10 +16,10 @@ import { Router } from '@angular/router';
     CocktailCardComponent,
     ContextMenuModule
   ],
-  templateUrl: './cocktails-list.component.html',
-  styleUrl: './cocktails-list.component.scss'
+  templateUrl: './cocktails-layout.component.html',
+  styleUrl: './cocktails-layout.component.scss'
 })
-export class CocktailsListComponent implements OnInit{
+export class CocktailsLayoutComponent implements OnInit{
   @ViewChild('cm') cm!: ContextMenu;
 
   items: MenuItem[] | undefined;

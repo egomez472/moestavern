@@ -11,6 +11,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CocktailStateService } from '../../core/services/states/cocktail-state.service';
 import { SearchQuery } from '../../core/interfaces/search-query.interface';
 import { Position } from '../../core/interfaces/position.interface';
+import { ButtonModule } from 'primeng/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cocktail-filter',
@@ -22,13 +24,20 @@ import { Position } from '../../core/interfaces/position.interface';
     HttpClientModule,
     InputGroupModule,
     InputGroupAddonModule,
-    InputTextModule
+    InputTextModule,
+    ButtonModule
   ],
   templateUrl: './cocktail-filter.component.html',
   styleUrl: './cocktail-filter.component.scss'
 })
 export class CocktailFilterComponent implements OnInit, OnDestroy {
   @Output() filterChange = new EventEmitter<Cocktail[]>();
+  @HostListener('window:scroll', ['$event'])
+  onMouseMove() {
+    const scrollY = window.scrollY;
+    this.cocktailState.setPosition(window.scrollX, scrollY);
+  }
+
   private destroy$ = new Subject<void>();
 
   filterForm: FormGroup;
@@ -36,7 +45,8 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private cocktailSvc: CocktailsService,
-    private cocktailState: CocktailStateService
+    private cocktailState: CocktailStateService,
+    private router: Router
   ) {
     this.filterForm = this.fb.group({
       name: ['',[Validators.pattern(/^[a-zA-Z\s]*$/), Validators.maxLength(50)]],
@@ -84,12 +94,6 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  @HostListener('window:scroll', ['$event'])
-  onMouseMove() {
-    const scrollY = window.scrollY;
-    this.cocktailState.setPosition(window.scrollX, scrollY);
-  }
-
   initState(cocktailState: SearchQuery, positionState: Position) {
     const state = cocktailState;
 
@@ -135,4 +139,7 @@ export class CocktailFilterComponent implements OnInit, OnDestroy {
     this.filterChange.emit(data);
   }
 
+  goToFavoriteList() {
+    this.router.navigate(['cocktails/favorites'])
+  }
 }

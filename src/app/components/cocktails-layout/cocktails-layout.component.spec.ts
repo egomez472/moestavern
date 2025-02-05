@@ -1,26 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CocktailsListComponent } from './cocktails-list.component';
+import { CocktailsLayoutComponent } from './cocktails-layout.component';
 import { Cocktail } from '../../core/interfaces/cocktail.interface';
 import { Router } from '@angular/router';
 
 describe('CocktailsListComponent', () => {
-  let component: CocktailsListComponent;
-  let fixture: ComponentFixture<CocktailsListComponent>;
+  let component: CocktailsLayoutComponent;
+  let fixture: ComponentFixture<CocktailsLayoutComponent>;
   let routerMock: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
     routerMock = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      imports: [CocktailsListComponent],
+      imports: [CocktailsLayoutComponent],
       providers: [
         { provide: Router, useValue: routerMock } // Usar el mock aquí
       ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CocktailsListComponent);
+    fixture = TestBed.createComponent(CocktailsLayoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

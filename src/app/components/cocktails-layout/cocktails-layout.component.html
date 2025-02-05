@@ -16,12 +16,8 @@
     </div>
   }
   <p-contextMenu #cm [model]="items" (onHide)="onHide()" />
-  @if((cocktails || []).length <= 0) {
-    <div class="content__list--empty">
-      <div>
-        <span>Search a cocktail...</span>
-      </div>
-    </div>
-  }
+
+  <router-outlet></router-outlet>
 </div>
+
 
