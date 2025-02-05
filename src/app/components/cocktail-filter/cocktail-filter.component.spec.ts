@@ -19,12 +19,13 @@ describe('CocktailFilterComponent', () => {
     setPosition: jasmine.createSpy('setPosition'),
     getPosition: jasmine.createSpy('getPosition').and.returnValue({ x: 0, y: 0 }),
     setCocktailState: jasmine.createSpy('setCocktailState'),
-    setIdState: jasmine.createSpy('setIdState')
+    setIdState: jasmine.createSpy('setIdState'),
+    setIngredientState: jasmine.createSpy('setIngredientState')
   };
 
   beforeEach(async () => {
     destroy$ = new Subject<void>();
-    const cocktailSvcSpy = jasmine.createSpyObj('CocktailsService', ['getCocktailByName', 'getCocktailById']);
+    const cocktailSvcSpy = jasmine.createSpyObj('CocktailsService', ['getCocktailByName', 'getCocktailById', 'getCocktailByIngredient']);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -177,5 +178,34 @@ describe('CocktailFilterComponent', () => {
 
     expect(cocktailStateService.setPosition).toHaveBeenCalledWith(scrollX, scrollY);
   });
+
+  it('debería suscribirse a valueChanges en ngOnInit y llamar a getCocktailByIngredient', fakeAsync(() => {
+    const ingredientControl = component.filterForm.get('ingredient');
+    const mockResponse: Cocktail[] = [
+      {
+        id: 1,
+        img:'',
+        name: 'Mojito',
+        ingredients: [{name: 'mojito', measure: '1/2'}],
+        instructions: {
+          EN: 'string',
+          DE: 'string',
+          ES: 'string',
+          FR: 'string',
+          IT: 'string'
+        }
+      }
+    ];
+    cocktailServiceSpy.getCocktailByIngredient.and.returnValue(of(mockResponse));
+
+    spyOn(component, 'getCocktailByIngredient').and.callThrough();
+
+    component.ngOnInit();
+    ingredientControl?.setValue('Gin');
+
+    tick(500);
+    expect(component.getCocktailByIngredient).toHaveBeenCalledWith('Gin');
+    expect(cocktailServiceSpy.getCocktailByIngredient).toHaveBeenCalledWith('Gin');
+  }));
 
 });

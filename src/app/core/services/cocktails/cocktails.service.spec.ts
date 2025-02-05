@@ -92,4 +92,35 @@ describe('CocktailsService', () => {
     expect(params.get('i')).toBe(cocktailId.toString());
   });
 
+  it('debería devolver un array vacío si el ingrediente del cóctel está vacío', (done) => {
+    service.getCocktailByIngredient('').subscribe((result) => {
+      expect(result).toEqual([]);
+      done();
+    });
+  });
+
+  it('debería devolver un array vacío si el ingrediente del cóctel es solo espacios', (done) => {
+    service.getCocktailByIngredient('   ').subscribe((result) => {
+      expect(result).toEqual([]);
+      done();
+    });
+  });
+
+  it('debería llamar a RestService.get con el servicio getCocktailByIngredient', () => {
+    const ingredient = 'Gin';
+    const mockResponse = { drinks: [] };
+
+    restServiceMock.get.and.returnValue(of(mockResponse));
+
+    service.getCocktailByIngredient(ingredient).subscribe();
+
+    expect(restServiceMock.get).toHaveBeenCalledWith(
+      EndpointsConstant.getCocktailByIngredient,
+      jasmine.any(HttpParams)
+    );
+
+    const params = restServiceMock.get.calls.mostRecent().args[1] as HttpParams;
+    expect(params.get('i')).toBe(ingredient);
+  });
+
 });

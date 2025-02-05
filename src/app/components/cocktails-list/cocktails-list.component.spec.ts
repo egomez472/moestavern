@@ -2,14 +2,21 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CocktailsListComponent } from './cocktails-list.component';
 import { Cocktail } from '../../core/interfaces/cocktail.interface';
+import { Router } from '@angular/router';
 
 describe('CocktailsListComponent', () => {
   let component: CocktailsListComponent;
   let fixture: ComponentFixture<CocktailsListComponent>;
+  let routerMock: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
+    routerMock = jasmine.createSpyObj('Router', ['navigate']);
+
     await TestBed.configureTestingModule({
-      imports: [CocktailsListComponent]
+      imports: [CocktailsListComponent],
+      providers: [
+        { provide: Router, useValue: routerMock } // Usar el mock aquí
+      ]
     })
     .compileComponents();
 
@@ -85,8 +92,8 @@ describe('CocktailsListComponent', () => {
     expect(consoleLogSpy).toHaveBeenCalledWith('Favorito', cocktailMock);
   });
 
-  it('debería loguear selectedCocktail cuando showDetails se llama', () => {
-    const cocktailMock: Cocktail = {
+  it('debería navegar a la ruta correcta cuando se llama a showDetails', () => {
+    component.selectedCocktail = {
       id: 1,
       img: 'img.png',
       name: 'Mojito',
@@ -94,12 +101,16 @@ describe('CocktailsListComponent', () => {
       instructions: { EN: '', DE: '', ES: '', FR: '', IT: '' }
     };
 
-    component.selectedCocktail = cocktailMock;
-    const consoleLogSpy = spyOn(console, 'log');
-
     component.showDetails();
 
-    expect(consoleLogSpy).toHaveBeenCalledWith('Detalle', cocktailMock);
+    expect(routerMock.navigate).toHaveBeenCalledWith(['cocktails', component.selectedCocktail.id]);
+  });
+
+  it('no debería navegar si no hay un cóctel seleccionado', () => {
+    component.selectedCocktail = null;
+    component.showDetails();
+
+    expect(routerMock.navigate).not.toHaveBeenCalled();
   });
 
   it('onFilterChange debería recibir datos de tipo Cocktail[]', () => {
