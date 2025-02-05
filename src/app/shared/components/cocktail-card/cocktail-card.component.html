@@ -5,18 +5,15 @@
   </ng-template>
 
   <ng-template pTemplate="subtitle">
-    <span>Some ingredients...</span>
-    <div class="chips">
-      <p-chip
-        *ngFor="let ingredient of cocktail.ingredients"
-        label="{{ingredient.name}}"
-        styleClass="chips"/>
-    </div>
-  </ng-template>
-
-  <!-- <ng-template pTemplate="footer">
-      <div class="flex gap-3 mt-1">
-          <p-button styleClass="details-btn" label="Details" severity="secondary" />
+    @if((cocktail.ingredients || []).length > 0) {
+      <span>Some ingredients...</span>
+      <div class="chips">
+        @for(ingredient of cocktail.ingredients; track ingredient) {
+          <p-chip
+            label="{{ingredient.name}}"
+            styleClass="chips"/>
+        }
       </div>
-  </ng-template> -->
+    }
+  </ng-template>
 </p-card>

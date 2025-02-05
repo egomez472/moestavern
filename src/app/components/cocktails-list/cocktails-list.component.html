@@ -5,18 +5,23 @@
     </app-cocktail-filter>
   </div>
 
-  <div *ngIf="cocktails.length > 0" class="content__list">
-      <app-cocktail-card
-        *ngFor="let cocktail of cocktails"
-        [cocktail]="cocktail"
-        (contextmenu)="onContextMenu($event, cocktail)">
-      </app-cocktail-card>
-  </div>
-  <p-contextMenu #cm [model]="items" (onHide)="onHide()" />
-  <div *ngIf="cocktails.length <= 0" class="content__list--empty">
-    <div>
-      <span>Search a cocktail...</span>
+  @if((cocktails || []).length > 0) {
+    <div class="content__list">
+        @for(cocktail of cocktails; track cocktail) {
+          <app-cocktail-card
+            [cocktail]="cocktail"
+            (contextmenu)="onContextMenu($event, cocktail)">
+          </app-cocktail-card>
+        }
     </div>
-  </div>
+  }
+  <p-contextMenu #cm [model]="items" (onHide)="onHide()" />
+  @if((cocktails || []).length <= 0) {
+    <div class="content__list--empty">
+      <div>
+        <span>Search a cocktail...</span>
+      </div>
+    </div>
+  }
 </div>
 
