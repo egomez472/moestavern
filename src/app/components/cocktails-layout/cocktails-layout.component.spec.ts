@@ -5,6 +5,8 @@ import { Cocktail } from '../../core/interfaces/cocktail.interface';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { CocktailStateService } from '../../core/services/states/cocktail-state.service';
+import { MessageService } from 'primeng/api';
+import { ActionResponse } from '../../core/interfaces/actions-response.interface';
 
 describe('CocktailsLayoutComponent', () => {
   let component: CocktailsLayoutComponent;
@@ -12,6 +14,8 @@ describe('CocktailsLayoutComponent', () => {
   let routerMock: jasmine.SpyObj<Router>;
   let activatedRouteStub: any;
   let stateMock: jasmine.SpyObj<CocktailStateService>;
+
+  let mockMessageService: jasmine.SpyObj<MessageService>;
 
   beforeEach(async () => {
     routerMock = jasmine.createSpyObj('Router', ['navigate']);
@@ -29,12 +33,16 @@ describe('CocktailsLayoutComponent', () => {
       favorites: []
     })
 
+    mockMessageService = jasmine.createSpyObj('MessageService', ['add']);
+
     await TestBed.configureTestingModule({
       imports: [CocktailsLayoutComponent],
       providers: [
         { provide: Router, useValue: routerMock },
         { provide: ActivatedRoute, useValue: activatedRouteStub},
-        { provide: CocktailStateService, useValue: stateMock}
+        { provide: CocktailStateService, useValue: stateMock},
+
+        { provide: MessageService, useValue: mockMessageService }
       ]
     })
     .compileComponents();
@@ -94,22 +102,6 @@ describe('CocktailsLayoutComponent', () => {
     expect(component.selectedCocktail).toBeNull();
   });
 
-  it('debería loguear selectedCocktail cuando addFavorite se llama', () => {
-    const cocktailMock: Cocktail = {
-      id: 1,
-      img: 'img.png',
-      name: 'Mojito',
-      ingredients: [{ name: 'Rum', measure: '1 oz' }],
-      instructions: { EN: '', DE: '', ES: '', FR: '', IT: '' }
-    };
-
-    component.selectedCocktail = cocktailMock;
-    expect(component.selectedCocktail).toBe(cocktailMock);
-
-    component.addFavorite();
-    expect(stateMock.addFavoriteState).toHaveBeenCalledWith(cocktailMock);
-  });
-
   it('debería navegar a la ruta correcta cuando se llama a showDetails', () => {
     component.selectedCocktail = {
       id: 1,
@@ -137,7 +129,7 @@ describe('CocktailsLayoutComponent', () => {
 
     component.showDetails(mockCocktail);
     expect(routerMock.navigate).toHaveBeenCalledWith(['cocktails', mockCocktail.id])
-  })
+  });
 
   it('onFilterChange debería recibir datos de tipo Cocktail[]', () => {
     const mockCocktails: Cocktail[] = [
@@ -151,5 +143,38 @@ describe('CocktailsLayoutComponent', () => {
     expect(component.cocktails.length).toBe(2);
     expect(component.cocktails[0].name).toBe('Mojito');
     expect(component.cocktails[1].name).toBe('Daiquiri');
-  })
+  });
+
+  it('deberia llamar a addFavoriteState y showToast cuando selectedCocktail es definido', () => {
+    const cocktail: Cocktail = { id: 1, img: '', name: 'Mojito', ingredients: [{ name: 'Mojito', measure: '1/3' }], instructions: { EN: '', DE: '', ES: '', FR: '', IT: '' } };
+    component.selectedCocktail = cocktail;
+
+    const response: ActionResponse = { error: false, message: 'Added to favorites', title: 'Success' };
+    stateMock.addFavoriteState.and.returnValue(response);
+
+    const msgSpy = spyOn(component['messageService'], 'add')
+    component.addFavorite();
+
+    expect(stateMock.addFavoriteState).toHaveBeenCalledWith(cocktail);
+    expect(msgSpy).toHaveBeenCalledWith({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Added to favorites',
+      key: 'action'
+    });
+
+    const response2: ActionResponse = { error: true, message: 'Added to favorites', title: 'Warn' };
+    stateMock.addFavoriteState.and.returnValue(response2);
+
+    component.addFavorite();
+
+    expect(stateMock.addFavoriteState).toHaveBeenCalledWith(cocktail);
+    expect(msgSpy).toHaveBeenCalledWith({
+      severity: 'warn',
+      summary: 'Warn',
+      detail: 'Added to favorites',
+      key: 'action'
+    });
+  });
+
 });

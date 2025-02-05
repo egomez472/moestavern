@@ -93,7 +93,7 @@ describe('CocktailStateService', () => {
   });
 
   describe('addFavoriteState', () => {
-    it('debería registrar un mensaje cuando el cóctel ya existe en favoritos', () => {
+    it('debería retornar un objeto ActionResponse cuando el cóctel ya existe en favoritos', () => {
       const cocktailMock: Cocktail = {
         id: 1,
         img: 'img.png',
@@ -110,11 +110,11 @@ describe('CocktailStateService', () => {
         favorites: [cocktailMock]
       });
 
-      const consoleSpy = spyOn(console, 'log');
+      const response = service.addFavoriteState(cocktailMock);
 
-      service.addFavoriteState(cocktailMock);
-
-      expect(consoleSpy).toHaveBeenCalledWith('El coctel ya existe en favoritos');
+      expect(response.error).toBeTrue();
+      expect(response.message).toBe('Cocktail already exists in favorites');
+      expect(response.title).toBe('Add Favorite');
       expect(service['cocktailStateSubject'].value.favorites.length).toBe(1);
     });
 
@@ -127,17 +127,22 @@ describe('CocktailStateService', () => {
         instructions: { EN: '', DE: '', ES: '', FR: '', IT: '' }
       };
 
-      service['cocktailStateSubject'] = new BehaviorSubject({
+      service['cocktailStateSubject'].next({
         query: '',
         id: '',
         ingredient: '',
         cocktails: [],
         favorites: []
-      } as SearchQuery);
+      })
 
-      service.addFavoriteState(cocktailMock);
+      const response = service.addFavoriteState(cocktailMock);
+      expect(response.error).toBeFalse();
+      expect(response.message).toBe('Cocktail added to favorites');
+      expect(service.getState().favorites).toContain(cocktailMock);
+
       expect(service['cocktailStateSubject'].value.favorites.length).toBe(1);
       expect(service['cocktailStateSubject'].value.favorites[0]).toEqual(cocktailMock);
+      expect(service['cocktailStateSubject'].value.favorites[0].name).toEqual('Daiquiri');
     });
   })
 
