@@ -4,6 +4,7 @@ import { SearchQuery } from '../../interfaces/search-query.interface';
 import { Position } from '../../interfaces/position.interface';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { StorageService } from '../storage.service';
+import { ActionResponse } from '../../interfaces/actions-response.interface';
 
 const COCKTAIL_KEY: string = 'cocktailState';
 const POSITION_KEY: string = 'statePosition';
@@ -75,14 +76,15 @@ export class CocktailStateService {
     this.cocktailStateSubject.next({ ...this.cocktailStateSubject.value, cocktails });
   }
 
-  addFavoriteState(cocktail: Cocktail) {
+  addFavoriteState(cocktail: Cocktail): ActionResponse {
     const favorites = this.getState().favorites;
-    const exists = favorites.some(_cocktail => _cocktail.id === cocktail.id);
+    const exists = (favorites||[]).some(_cocktail => _cocktail.id === cocktail.id);
     if(exists) {
-      console.log('El coctel ya existe en favoritos');
+      return {error: true, message: 'Cocktail already exists in favorites', title: 'Add Favorite'}
     } else {
       favorites.unshift(cocktail);
       this.cocktailStateSubject.next({ ...this.cocktailStateSubject.value, favorites });
+      return {error: false, message: 'Cocktail added to favorites', title: 'Add Favorite'}
     }
   }
 

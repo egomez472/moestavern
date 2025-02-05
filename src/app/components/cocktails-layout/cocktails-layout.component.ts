@@ -4,9 +4,11 @@ import { CommonModule } from '@angular/common';
 import { Cocktail } from '../../core/interfaces/cocktail.interface';
 import { CocktailCardComponent } from '../../shared/components/cocktail-card/cocktail-card.component';
 import { ContextMenu, ContextMenuModule } from 'primeng/contextmenu';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { ToastModule } from 'primeng/toast';
 import { CocktailStateService } from '../../core/services/states/cocktail-state.service';
+import { ActionResponse } from '../../core/interfaces/actions-response.interface';
 
 @Component({
   selector: 'app-cocktails-list',
@@ -15,8 +17,10 @@ import { CocktailStateService } from '../../core/services/states/cocktail-state.
     CommonModule,
     CocktailFilterComponent,
     CocktailCardComponent,
-    ContextMenuModule
+    ContextMenuModule,
+    ToastModule
   ],
+  providers: [MessageService],
   templateUrl: './cocktails-layout.component.html',
   styleUrl: './cocktails-layout.component.scss'
 })
@@ -29,7 +33,8 @@ export class CocktailsLayoutComponent implements OnInit{
 
   constructor(
     private router: Router,
-    private state: CocktailStateService
+    private state: CocktailStateService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -52,9 +57,14 @@ export class CocktailsLayoutComponent implements OnInit{
   }
 
   addFavorite() {
-    if(this.selectedCocktail) {
-      this.state.addFavoriteState(this.selectedCocktail);
+    if (this.selectedCocktail) {
+      const added: ActionResponse = this.state.addFavoriteState(this.selectedCocktail);
+      this.showToast(added.error ? 'warn' : 'success', added.message, added.title);
     }
+  }
+
+  showToast(severity: string, detail:string, summary:string ) {
+    this.messageService.add({ severity, summary, detail, key: 'action' });
   }
 
   showDetails(cocktail?: Cocktail) {
