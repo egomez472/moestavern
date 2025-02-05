@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CocktailFilterComponent } from './cocktail-filter.component';
 import { CocktailsService } from '../../core/services/cocktails/cocktails.service';
 import { CocktailStateService } from '../../core/services/states/cocktail-state.service';
-import { convertToParamMap, ParamMap, Router } from '@angular/router';
+import { convertToParamMap, Router } from '@angular/router';
 import { StorageService } from '../../core/services/storage.service';
 import { ActivatedRoute } from '@angular/router';
 import { SearchQuery } from '../../core/interfaces/search-query.interface';
@@ -17,7 +17,6 @@ describe('CocktailFilterComponent', () => {
   let fixture: ComponentFixture<CocktailFilterComponent>;
   let cocktailService: jasmine.SpyObj<CocktailsService>;
   let cocktailStateService: jasmine.SpyObj<CocktailStateService>;
-  let cocktailServiceSpy: jasmine.SpyObj<CocktailsService>;
   let router: jasmine.SpyObj<Router>;
   let storageService: jasmine.SpyObj<StorageService>;
   let activatedRoute: jasmine.SpyObj<ActivatedRoute>;
@@ -226,16 +225,16 @@ describe('CocktailFilterComponent', () => {
       cocktails: [],
       favorites: []
     };
+    cocktailStateService['cocktailStateSubject'] = new BehaviorSubject(mockState);
     cocktailStateService.getState.and.returnValue(mockState)
     component.ngOnInit();
     component.filterForm.get('name')?.setValue('Mojito');
 
-    // Espera el debounceTime
     setTimeout(() => {
       expect(cocktailStateService.setSearchQuery).toHaveBeenCalledWith('Mojito');
       expect(component.getCocktailByName).toHaveBeenCalledWith('Mojito');
       done();
-    }, 600); // Debe ser mayor que el debounceTime
+    }, 600);
   });
 
   it('deberia setear el id y llamar a getCocktailById en valueChanges', (done) => {
@@ -248,16 +247,16 @@ describe('CocktailFilterComponent', () => {
       cocktails: [],
       favorites: []
     };
+    cocktailStateService['cocktailStateSubject'] = new BehaviorSubject(mockState);
     cocktailStateService.getState.and.returnValue(mockState)
     component.ngOnInit();
     component.filterForm.get('id')?.setValue(1);
 
-    // Espera el debounceTime
     setTimeout(() => {
       expect(cocktailStateService.setIdState).toHaveBeenCalledWith(1);
       expect(component.getCocktailById).toHaveBeenCalledWith(1);
       done();
-    }, 600); // Debe ser mayor que el debounceTime
+    }, 600);
   });
 
   it('deberia setear el ingrediente y llamar a getCocktailByIngredient en valueChanges', (done) => {
@@ -270,16 +269,16 @@ describe('CocktailFilterComponent', () => {
       cocktails: [],
       favorites: []
     };
+    cocktailStateService['cocktailStateSubject'] = new BehaviorSubject(mockState);
     cocktailStateService.getState.and.returnValue(mockState)
     component.ngOnInit();
     component.filterForm.get('ingredient')?.setValue(mockState.ingredient);
 
-    // Espera el debounceTime
     setTimeout(() => {
       expect(cocktailStateService.setIngredientState).toHaveBeenCalledWith(mockState.ingredient);
       expect(component.getCocktailByIngredient).toHaveBeenCalledWith(mockState.ingredient);
       done();
-    }, 600); // Debe ser mayor que el debounceTime
+    }, 600);
   });
 
   it('deberia llamarse initPositionState en el afterViewInit', () => {

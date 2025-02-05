@@ -15,6 +15,6 @@ export class StorageService {
     const obj = localStorage.getItem(key);
     if(obj) {
       return JSON.parse(obj);
-    }
+    } else return false
   }
 }

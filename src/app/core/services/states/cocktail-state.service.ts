@@ -33,6 +33,14 @@ export class CocktailStateService {
   ) {
     if(this.storage.get(COCKTAIL_KEY)) {
       this.cocktailStateSubject.next(this.storage.get(COCKTAIL_KEY));
+    } else {
+      this.cocktailStateSubject.next({
+        query: '',
+        id: '',
+        ingredient: '',
+        cocktails: [],
+        favorites: [],
+      });
     }
     this.cocktailState$.subscribe((response: SearchQuery) => {
       this.storage.save(COCKTAIL_KEY, response);
@@ -40,6 +48,11 @@ export class CocktailStateService {
 
     if(this.storage.get(POSITION_KEY)) {
       this.positionSubject.next(this.storage.get(POSITION_KEY));
+    } else {
+      this.positionSubject.next({
+        x: 0,
+        y: 0
+      });
     }
     this.position$.subscribe((response: Position) => {
       this.storage.save(POSITION_KEY, response);
