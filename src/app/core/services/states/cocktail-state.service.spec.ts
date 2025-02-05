@@ -3,6 +3,7 @@ import { CocktailStateService } from './cocktail-state.service';
 import { Cocktail } from '../../interfaces/cocktail.interface';
 import { SearchQuery } from '../../interfaces/search-query.interface';
 import { Position } from '../../interfaces/position.interface';
+import { BehaviorSubject } from 'rxjs';
 
 describe('CocktailStateService', () => {
   let service: CocktailStateService;
@@ -10,6 +11,13 @@ describe('CocktailStateService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(CocktailStateService);
+    service['cocktailStateSubject'].next({
+      query: '',
+      id: '',
+      ingredient: '',
+      cocktails: [],
+      favorites: []
+    })
   });
 
   it('deberia crearse el servicio', () => {
@@ -42,7 +50,7 @@ describe('CocktailStateService', () => {
       const query = 'Margarita';
       service.setSearchQuery(query);
       const searchQuery: SearchQuery = service.getState();
-      expect(searchQuery.query).toBe(query);
+      expect(searchQuery.query).toBe('Margarita');
     });
   });
 
@@ -68,7 +76,7 @@ describe('CocktailStateService', () => {
 
   describe('getIdState', () => {
     it('deberia setear y retornar el id del state', () => {
-      const id = '20';
+      const id = 20;
       service.setIdState(id);
       const idState: SearchQuery = service.getState();
       expect(idState.id).toEqual(id);
@@ -81,6 +89,80 @@ describe('CocktailStateService', () => {
       service.setIngredientState(ingredient);
       const ingredientState: SearchQuery = service.getState();
       expect(ingredientState.ingredient).toEqual(ingredient);
+    });
+  });
+
+  describe('addFavoriteState', () => {
+    it('debería registrar un mensaje cuando el cóctel ya existe en favoritos', () => {
+      const cocktailMock: Cocktail = {
+        id: 1,
+        img: 'img.png',
+        name: 'Mojito',
+        ingredients: [{ name: 'Rum', measure: '1 oz' }],
+        instructions: { EN: '', DE: '', ES: '', FR: '', IT: '' }
+      };
+
+      service['cocktailStateSubject'].next({
+        query: '',
+        id: '',
+        ingredient: '',
+        cocktails: [],
+        favorites: [cocktailMock]
+      });
+
+      const consoleSpy = spyOn(console, 'log');
+
+      service.addFavoriteState(cocktailMock);
+
+      expect(consoleSpy).toHaveBeenCalledWith('El coctel ya existe en favoritos');
+      expect(service['cocktailStateSubject'].value.favorites.length).toBe(1);
+    });
+
+    it('debería agregar el cóctel a favoritos y emitir un nuevo estado cuando no existe en favoritos', () => {
+      const cocktailMock: Cocktail = {
+        id: 2,
+        img: 'img.png',
+        name: 'Daiquiri',
+        ingredients: [{ name: 'Rum', measure: '1 oz' }],
+        instructions: { EN: '', DE: '', ES: '', FR: '', IT: '' }
+      };
+
+      service['cocktailStateSubject'] = new BehaviorSubject({
+        query: '',
+        id: '',
+        ingredient: '',
+        cocktails: [],
+        favorites: []
+      } as SearchQuery);
+
+      service.addFavoriteState(cocktailMock);
+      expect(service['cocktailStateSubject'].value.favorites.length).toBe(1);
+      expect(service['cocktailStateSubject'].value.favorites[0]).toEqual(cocktailMock);
+    });
+  })
+
+  describe('setFavoriteListState', () => {
+    it('debería actualizar el estado de favorites cuando se llama a setFavoriteListState', () => {
+      const cocktailMock1: Cocktail = {
+        id: 1,
+        img: 'img1.png',
+        name: 'Mojito',
+        ingredients: [{ name: 'Rum', measure: '1 oz' }],
+        instructions: { EN: '', DE: '', ES: '', FR: '', IT: '' }
+      };
+
+      const cocktailMock2: Cocktail = {
+        id: 2,
+        img: 'img2.png',
+        name: 'Daiquiri',
+        ingredients: [{ name: 'Rum', measure: '1 oz' }],
+        instructions: { EN: '', DE: '', ES: '', FR: '', IT: '' }
+      };
+
+      service.setFavoriteListState([cocktailMock1, cocktailMock2]);
+
+      expect(service['cocktailStateSubject'].value.favorites.length).toBe(2);
+      expect(service['cocktailStateSubject'].value.favorites).toEqual([cocktailMock1, cocktailMock2]);
     });
   })
 });

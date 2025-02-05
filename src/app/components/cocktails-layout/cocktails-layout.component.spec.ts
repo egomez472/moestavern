@@ -2,20 +2,39 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CocktailsLayoutComponent } from './cocktails-layout.component';
 import { Cocktail } from '../../core/interfaces/cocktail.interface';
-import { Router } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { CocktailStateService } from '../../core/services/states/cocktail-state.service';
 
-describe('CocktailsListComponent', () => {
+describe('CocktailsLayoutComponent', () => {
   let component: CocktailsLayoutComponent;
   let fixture: ComponentFixture<CocktailsLayoutComponent>;
   let routerMock: jasmine.SpyObj<Router>;
+  let activatedRouteStub: any;
+  let stateMock: jasmine.SpyObj<CocktailStateService>;
 
   beforeEach(async () => {
     routerMock = jasmine.createSpyObj('Router', ['navigate']);
+    activatedRouteStub = {queryParamMap: of(convertToParamMap({favs: true}))};
+    stateMock = jasmine.createSpyObj('CocktailStateService', ['addFavoriteState', 'getState', 'getPosition']);
+    stateMock.getPosition.and.returnValue({
+      x: 0,
+      y: 0
+    })
+    stateMock.getState.and.returnValue({
+      query: '',
+      id:1,
+      ingredient: '',
+      cocktails: [],
+      favorites: []
+    })
 
     await TestBed.configureTestingModule({
       imports: [CocktailsLayoutComponent],
       providers: [
-        { provide: Router, useValue: routerMock } // Usar el mock aquí
+        { provide: Router, useValue: routerMock },
+        { provide: ActivatedRoute, useValue: activatedRouteStub},
+        { provide: CocktailStateService, useValue: stateMock}
       ]
     })
     .compileComponents();
@@ -85,11 +104,10 @@ describe('CocktailsListComponent', () => {
     };
 
     component.selectedCocktail = cocktailMock;
-    const consoleLogSpy = spyOn(console, 'log');
+    expect(component.selectedCocktail).toBe(cocktailMock);
 
     component.addFavorite();
-
-    expect(consoleLogSpy).toHaveBeenCalledWith('Favorito', cocktailMock);
+    expect(stateMock.addFavoriteState).toHaveBeenCalledWith(cocktailMock);
   });
 
   it('debería navegar a la ruta correcta cuando se llama a showDetails', () => {
@@ -102,16 +120,24 @@ describe('CocktailsListComponent', () => {
     };
 
     component.showDetails();
-
     expect(routerMock.navigate).toHaveBeenCalledWith(['cocktails', component.selectedCocktail.id]);
   });
 
-  it('no debería navegar si no hay un cóctel seleccionado', () => {
-    component.selectedCocktail = null;
-    component.showDetails();
+  it('deberia navegar a la ruta correcta cuando se llama a showDetails cuando selectedCocktail es null', () => {
+    const mockCocktail = {
+      id: 1,
+      img: 'img.png',
+      name: 'Mojito',
+      ingredients: [{ name: 'Rum', measure: '1 oz' }],
+      instructions: { EN: '', DE: '', ES: '', FR: '', IT: '' }
+    };
 
-    expect(routerMock.navigate).not.toHaveBeenCalled();
-  });
+    component.selectedCocktail = null;
+    expect(component.selectedCocktail).toBeNull();
+
+    component.showDetails(mockCocktail);
+    expect(routerMock.navigate).toHaveBeenCalledWith(['cocktails', mockCocktail.id])
+  })
 
   it('onFilterChange debería recibir datos de tipo Cocktail[]', () => {
     const mockCocktails: Cocktail[] = [
