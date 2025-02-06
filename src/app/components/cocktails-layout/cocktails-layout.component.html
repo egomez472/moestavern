@@ -18,11 +18,11 @@
     </div>
   } @else if(!notFoundAndQuery) {
     <div style="display: flex;justify-content: center;align-items: center;height: 100%;">
-      <h3>Search a cocktail...</h3>
+      <h1>Search a cocktail...</h1>
     </div>
   } @else {
     <div style="display: flex;justify-content: center;align-items: center;height: 100%;">
-      <h3>Cocktail not found :(</h3>
+      <h1>Cocktail not found :(</h1>
     </div>
   }
   <p-contextMenu #cm [model]="items" (onHide)="onHide()" />
