@@ -76,8 +76,10 @@ export class CocktailsLayoutComponent implements OnInit{
     this.router.navigate(['cocktails', this.selectedCocktail?.id]);
   }
 
+  notFoundAndQuery: boolean = false;
   onFilterChange($event: Cocktail[]) {
     this.cocktails = $event;
+    this.notFoundAndQuery = ($event.length >= 0 && this.state.getState().query !== '') ? true : false;
   }
 
   onContextMenu(event: any, cocktail: Cocktail) {

@@ -8,13 +8,21 @@
 
   @if((cocktails || []).length > 0) {
     <div class="content__list">
-        @for(cocktail of cocktails; track cocktail) {
-          <app-cocktail-card
-            [cocktail]="cocktail"
-            (contextmenu)="onContextMenu($event, cocktail)"
-            (click)="showDetails(cocktail)">
-          </app-cocktail-card>
-        }
+      @for(cocktail of cocktails; track cocktail) {
+        <app-cocktail-card
+          [cocktail]="cocktail"
+          (contextmenu)="onContextMenu($event, cocktail)"
+          (click)="showDetails(cocktail)">
+        </app-cocktail-card>
+      }
+    </div>
+  } @else if(!notFoundAndQuery) {
+    <div style="display: flex;justify-content: center;align-items: center;height: 100%;">
+      <h3>Search a cocktail...</h3>
+    </div>
+  } @else {
+    <div style="display: flex;justify-content: center;align-items: center;height: 100%;">
+      <h3>Cocktail not found :(</h3>
     </div>
   }
   <p-contextMenu #cm [model]="items" (onHide)="onHide()" />
