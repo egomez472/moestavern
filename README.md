@@ -17,7 +17,7 @@ Se implementó la librería [PrimeNG](https://v17.primeng.org/) para los compone
 Para poder correr el proyecto es necesario nada mas tener instalado
 NodeJS en sus versiones ^18.13.0 || ^20.9.0
 
-En caso de tener NVM (Node Version Manager) recomiendo correr el comando `nvm install 18.20.4` ya que es con la version de Node con la que se llevo a cabo el desarrollo.
+En caso de tener NVM (Node Version Manager) recomiendo correr el comando `nvm install 18.20.4` seguido de `nvm use 18.20.4` ya que es con la version de Node con la que se llevo a cabo el desarrollo.
 
 #### Pasos de ejecución:
 Una vez instalado NodeJS se deberán ejecutar los siguientes comandos en la carpeta raíz del proyecto:
@@ -25,7 +25,7 @@ Una vez instalado NodeJS se deberán ejecutar los siguientes comandos en la carp
 npm install
 ```
 
-Esto descargará las dependencias necesarias para poder ejecutar el proyecto y una vez finalizada la instalación ejecutar:
+Esto descargará las dependencias necesarias para poder ejecutar el proyecto. Una vez finalizada la instalación ejecutar:
 ```
 npm start
 ```
@@ -36,16 +36,16 @@ Para correr los test del proyecto se debe ejecutar en la carpeta raíz del proye
 ```
 npm run test
 ```
-Esto abrirá una nueva ventana de su navegador predeterminado con la lista completa de los test dentro del proyecto y en la terminal imprimirá en porcentaje el coverage total, también generará una carpeta llamada _**coverage**_ dentro de la carpeta raíz del proyecto en donde podemos encontrar el index.html para visualizarlo de una manera mas visual, se encuentra en: 
+Esto abrirá una nueva ventana de su navegador predeterminado con la lista completa de los test dentro del proyecto y en la terminal imprimirá en porcentaje el coverage total, también generará una carpeta llamada _**coverage**_ dentro de la carpeta raíz del proyecto en donde podemos encontrar el index.html para apreciarlo de una manera mas visual, se encuentra en: 
 >moestavern\coverage\moestavern\index.html
 
 ---
 
 ## Estructura del proyecto
-La estructura del proyecto es una arquitectura hibrida entre componentes standalone y modulares. Se utilizó la estrategia de carga perezosa para optimización de carga (lazy-loading).\
-En la raíz del proyecto nos encontramos con carpetas para dividir responsabilidades:
+La estructura del proyecto es una arquitectura hibrida entre componentes standalone y el uso de modulos. Se utilizó la estrategia de carga perezosa para optimización de carga (lazy-loading).\
+En la raíz del proyecto nos encontramos con la siguiente estructura para la división de responsabilidades:
 * ``components``: Todo lo relacionado a las distintas pantallas (detalle, listado, barra de filtros).
-Contiene un modulo de rutas donde se van a establecer todas las rutas relacionadas al cocktail, de esta manera si la aplicación va escalando podemos tener varios modulos de distintos apartados como pueden ser un perfil, un dashboard, panel de configuraciones, etc, haciendo la aplicación mas escalable a para futuras contribuciones.\
+Contiene un modulo de rutas donde se van a establecer todas las rutas relacionadas al cocktail, de esta manera si la aplicación va escalando podemos tener varios modulos de distintos apartados como pueden ser un perfil, un dashboard, panel de configuraciones, etc, haciendo la aplicación mas escalable para futuras contribuciones.\
 \
 ``components``: \
   |\
