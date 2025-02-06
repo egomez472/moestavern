@@ -1,8 +1,9 @@
 .card {
   overflow: hidden;
-  background-color: var(--card-background-color);
+  background-color: var(--background-color);
+  border: 2px solid var(--background-secondary);
+  color: var(--text-color);
   border-radius: 4px;
-  border: 2px solid #8B4513;
   min-height: 480px;
   display: flex;
   flex-direction: column;
@@ -11,8 +12,9 @@
   cursor: pointer;
 
   &:hover {
-    box-shadow: 0px 0px 8px #841198;
+    box-shadow: -3px 4px 3px #1f2023;
     transition: 0.3s;
+    border-color: #841198;
   }
 
   .p-card-body {

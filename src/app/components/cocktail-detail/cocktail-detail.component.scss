@@ -10,6 +10,10 @@
     display: flex;
     width: 100%;
     max-width: 65rem;
+
+    p-button button {
+      border-radius: 0px;
+    }
   }
 
   &__box {
@@ -18,8 +22,7 @@
     margin-bottom: 1rem;
     padding: 1rem;
     gap: 1rem;
-    background-color: #715242;
-    border-radius: 8px;
+    background-color: var(--background-secondary);
     max-width: 65rem;
     @media (max-width: 645px) {
       flex-direction: column;
@@ -28,7 +31,6 @@
 
     &__img {
       background-color: var(--background-color);
-      border-radius: 8px;
       padding: 1rem;
 
       img {
@@ -90,6 +92,7 @@
 .p-accordion .p-accordion-header .p-accordion-header-link {
   padding: 0.5rem;
   border: 0px;
+  border-radius: 0px;
   background-color: var(--background-color);
   color: var(--accent-color);
 }

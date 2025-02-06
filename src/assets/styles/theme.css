@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
 :root {
-  --background-color: #4E3B31; /* Marrón oscuro */
-  --accent-color: #F6D02F; /* Amarillo */
-  --text-color: #FFFFFF; /* Blanco */
+  --background-color: #27292d; /* Marrón oscuro */
+  --background-secondary: #1f2023;
+  --accent-color: #d1d5db; /* Amarillo */
+  --text-color: #d1d5db; /* Blanco */
   --secondary-text-color: #D3D3D3; /* Gris claro */
   --button-color: #3B6A3A; /* Verde botella */
   --warning-button-color: #C72C41; /* Rojo */
@@ -11,15 +14,18 @@
 body {
   background-color: var(--background-color);
   color: var(--text-color);
-  font-family: Arial, sans-serif;
+  /* font-family: Arial, sans-serif; */
+  font-family: "Space Grotesk", serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  color: var(--accent-color);
+h1, h2, h3, h4, h5, h6, span, input, div {
+  /* color: var(--accent-color); */
+  font-family: "Space Grotesk", serif;
 }
 
 p {
   color: var(--secondary-text-color);
+  font-family: "Space Grotesk", serif;
 }
 
 /* Estilos para botones */
@@ -168,22 +174,29 @@ p {
 
 .p-inputtext:enabled:focus {
   box-shadow: none;
-  border-color: #c29ecc!important;
+  border-color: var(--background-color);
 }
 
 .p-inputtext:enabled:hover {
-  border-color: #c29ecc!important;
+  border-color: var(--background-color);
 }
 
 .p-inputgroup-addon {
-  background-color: #a37963;
-  color: yellow;
-  border-color: #a37963;
+  background-color: var(--text-color);
+  /* border-color: var(--text-color); */
+  color: var(--background-color)!important;
+  border: 0px;
+  border-radius: 0px;
+
+  div {
+    color: var(--background-color)!important;
+  }
 }
 
 .p-inputtext {
-  background-color: #c29ecc;
-  border-color: #c29ecc !important;
-  color: #4e3b31;
+  background-color: var(--background-color);
+  border-color: var(--background-color) !important;
+  color: var(--text-color);
   font-weight: 600;
+  border-radius: 0px;
 }

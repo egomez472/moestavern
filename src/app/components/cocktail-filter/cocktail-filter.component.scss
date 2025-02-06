@@ -3,7 +3,7 @@
   padding: 0.5rem;
   align-items: center;
   justify-content: center;
-  background-color: #732630;
+  background-color: var(--background-secondary);
   height: 55px;
   gap: 1rem;
 
@@ -17,7 +17,8 @@
     &__button-favorite {
       button {
         transition: 0.5s ease;
-        border: 1px var(--secondary);
+        border: 0px;
+        border-radius: 0px;
 
         &:focus {
           box-shadow: none;

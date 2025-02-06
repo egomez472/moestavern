@@ -1,8 +1,8 @@
 .header {
   display: flex;
   justify-content: center;
-  background-color: #a37963;
-  border-bottom: 3px solid #715242;
+  background-color: var(--background-secondary);
+  // border-bottom: 3px solid var(--background-secondary);
   height: 100px;
 
   &__img {

@@ -4,7 +4,7 @@
   align-items: center;
   padding: 0.5rem;
   gap: 0.5rem;
-  background-color: #571c24;
+  background-color: var(--background-secondary);
 
   &__page-link {
     display: flex;
@@ -15,14 +15,14 @@
     transition: 0.4s;
     a {
       text-decoration: none;
-      color: #a37963;
+      color: var(--text-color);
       font-size: 12px;
       font-weight: 600;
     }
 
     &:hover {
-      background-color: #a3796347;
-      border-radius: 4px;
+      background-color: var(--background-color);
+      // border-radius: 0px;
       transition: 0.4s;
       cursor: pointer;
     }
